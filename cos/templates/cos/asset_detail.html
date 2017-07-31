@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Computer: {{ object.asset_tag }}</h1>
+<ul>
+{% for computer in object.asset.all %}
+    <li><strong>{{ computer.computer_name }}</strong></li>
+    <li>{{ computer.os_arch }}</li>
+    <li>{{ computer.os }}</li>
+    <li>{{ computer.network_connection }}</li>
+    <li>{{ computer.active_directory }}</li>
+    <li>{{ computer.ip_address }}</li>
+    <li>{{ computer.organizational_unit }}</li>
+    <li>{{ computer.sccm }}</li>
+    <li>{{ computer.jamf }}</li>
+    <li>{{ computer.scep }}</li>
+    <li>{{ computer.identity_finder }}</li>
+    <li>{{ computer.notes }}</li>
+    <br><p>
+{% endfor %}
+</ul>
+
+{% endblock content %}

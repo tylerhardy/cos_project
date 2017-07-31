@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>COS Inventory Home</h1>
+
+<p>Welcome to <em>COS Asset Inventory</em>, a very basic Inventory Management System developed by Tyler Hardy.</p>
+
+<div>
+  {% load static %}
+</div>
+
+<h2>Dynamic content</h2>
+
+<p>The inventory has the following record counts:</p>
+<ul>
+  <li><strong>Assets:</strong> {{ assets.count }}</li>
+  <li><strong>Computer Objects:</strong> {{ computer_objects.count }}</li>
+</ul>
+
+{% endblock content %}
