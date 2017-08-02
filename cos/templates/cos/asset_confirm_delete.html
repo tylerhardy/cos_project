@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>Delete Asset</h1>
+
+<p>
+    <a href="{{ asset.get_absolute_url }}">Back</a>
+    <a href="{% url 'assets' %}">List Assets</a>
+</p>
+<p>Are you sure you want to delete the asset: <strong>{{ asset }}?</strong></p>
+<form action="" method="POST" class="form">
+  {% csrf_token %}
+  {% buttons %}
+    <button name="submit" class="btn btn-primary">Yes, delete</button>
+  {% endbuttons %}
+</form>
+
+{% endblock %}

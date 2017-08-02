@@ -1,24 +1,213 @@
 {% extends "base_generic.html" %}
+{% load bootstrap3 %}
 
 {% block content %}
 
 <h1>Computer: {{ object.asset_tag }}</h1>
-<ul>
-{% for computer in object.asset.all %}
-    <li><strong>{{ computer.computer_name }}</strong></li>
-    <li>{{ computer.os_arch }}</li>
-    <li>{{ computer.os }}</li>
-    <li>{{ computer.network_connection }}</li>
-    <li>{{ computer.active_directory }}</li>
-    <li>{{ computer.ip_address }}</li>
-    <li>{{ computer.organizational_unit }}</li>
-    <li>{{ computer.sccm }}</li>
-    <li>{{ computer.jamf }}</li>
-    <li>{{ computer.scep }}</li>
-    <li>{{ computer.identity_finder }}</li>
-    <li>{{ computer.notes }}</li>
-    <br><p>
-{% endfor %}
+<small>
+  <a href="{% url 'asset_update' asset.id %}">Edit</a>
+</small>
+<small>
+  <a href="{% url 'asset_duplicate' asset.id %}">Duplicate</a>
+</small>
+<small>
+  <a href="{% url 'asset_delete' asset.id %}">Delete</a>
+</small>
 </ul>
+ <table class="table table-bordered table-condensed table-hover table-striped">
+<tr>
+  <td>Computer Name:</td>
+  <td><strong>{{ object.computer_name }}</strong></td>
+</tr>
+<tr>
+  <td>Equipment Function:</td>
+  <td><strong>{{ object.equipment_role }}</strong></td>
+</tr>
+<tr>
+  <td> Equipment Condition:</td>
+  <td><strong>{{ object.equipment_condition }}</strong></td>
+</tr>
+<tr>
+  <td>Inventory System:</td>
+  <td><strong>{{ object.inventory_system }}</strong></td>
+</tr>
+<tr>
+  <td>Inventory System Up-To-Date:</td>
+  <td><strong>{{ object.inventory_system_current }}</strong></td>
+</tr>
+<tr>
+  <td>User:</td>
+  <td><strong>{{ object.user }}</strong></td>
+</tr>
+<tr>
+  <td>Curator:</td>
+  <td><strong>{{ object.curator }}</strong></td>
+</tr>
+<tr>
+  <td>Department:</td>
+  <td><strong>{{ object.department }}</strong></td>
+</tr>
+<tr>
+  <td>Organization Code:</td>
+  <td><strong>{{ object.org_code }}</strong></td>
+</tr>
+<tr>
+  <td>Location:</td>
+  <td><strong>{{ object.location }}</strong></td>
+</tr>
+<tr>
+  <td>Vendor:</td>
+  <td><strong>{{ object.vendor }}</strong></td>
+</tr>
+<tr>
+  <td>Vendor Serial Number:</td>
+  <td><strong>{{ object.vendor_serial_number }}</strong></td>
+</tr>
+<tr>
+  <td>PO:</td>
+  <td><strong>{{ object.purchase_order }}</strong></td>
+</tr>
+<tr>
+  <td>Purchase Date:</td>
+  <td><strong>{{ object.purchase_date }}</strong></td>
+</tr>
+<tr>
+  <td>Cost:</td>
+  <td><strong>{{ object.purchase_cost }}</strong></td>
+</tr>
+<tr>
+  <td>Funded By:</td>
+  <td><strong>{{ object.funded_by }}</strong></td>
+</tr>
+<tr>
+  <td>Type (MAC or PC):</td>
+  <td><strong>{{ object.hardware_type }}</strong></td>
+</tr>
+<tr>
+  <td>Make:</td>
+  <td><strong>{{ object.hardware_make }}</strong></td>
+</tr>
+<tr>
+  <td>Model:</td>
+  <td><strong>{{ object.hardware_model }}</strong></td>
+</tr>
+<tr>
+  <td>Serial Number:</td>
+  <td><strong>{{ object.hardware_serial_number }}</strong></td>
+</tr>
+<tr>
+  <td>Network Connection:</td>
+  <td><strong>{{ object.network_connection }}</strong></td>
+</tr>
+<tr>
+  <td>IP Address:</td>
+  <td><strong>{{ object.ip_address }}</strong></td>
+</tr>
+<tr>
+  <td>MAC Address:</td>
+  <td><strong>{{ object.mac_wired }}</strong></td>
+</tr>
+<tr>
+  <td>MAC Wireless Address:</td>
+  <td><strong>{{ object.mac_wireless }}</strong></td>
+</tr>
+<tr>
+  <td>Processor:</td>
+  <td><strong>{{ object.processor }}</strong></td>
+</tr>
+<tr>
+  <td>HDD:</td>
+  <td><strong>{{ object.harddrive }}</strong></td>
+</tr>
+<tr>
+  <td>RAM:</td>
+  <td><strong>{{ object.ram }}</strong></td>
+</tr>
+<tr>
+  <td>Graphics Card:</td>
+  <td><strong>{{ object.graphics }}</strong></td>
+</tr>
+  <td>OS:</td>
+  <td><strong>{{ object.os }}</strong></td>
+</tr>
+  <td>OS Architecture:</td>
+  <td><strong>{{ object.os_arch }}</strong></td>
+</tr>
+  <td>On Domain:</td>
+  <td><strong>{{ object.active_directory }}</strong></td>
+</tr>
+  <td>OU Location:</td>
+  <td><strong>{{ object.organizational_unit }}</strong></td>
+</tr>
+  <td>Listed in SCCM:</td>
+  <td><strong>{{ object.sccm }}</strong></td>
+</tr>
+  <td>Listed in JAMF:</td>
+  <td><strong>{{ object.jamf }}</strong></td>
+</tr>
+  <td>Has SCEP Installed:</td>
+  <td><strong>{{ object.scep }}</strong></td>
+</tr>
+  <td>Has Identity Finder:</td>
+  <td><strong>{{ object.identity_finder }}</strong></td>
+</tr>
+  <td>Notes:</td>
+  <td><strong>{{ object.notes }}</strong></td>
+</tr>
+  <td>Date Added:</td>
+  <td><strong>{{ object.added_date }}</strong></td>
+</tr>
+  <td>Added By:</td>
+  <td><strong>{{ object.added_by }}</strong></td>
+</tr>
+  <td>Date Modified:</td>
+  <td><strong>{{ object.modified_date }}</strong></td>
+</tr>
+  <td>Modified By:</td>
+  <td><strong>{{ object.modified_by }}</strong></td>
+</tr>
+<!-- <ul class='list-group'>
+  <li class="list-group-item">Computer Name: <strong>{{ object.computer_name }}</strong></li>
+  <li class="list-group-item">Equipment Function: <strong>{{ object.equipment_role }}</strong></li>
+  <li class="list-group-item">Equipment Condition: <strong>{{ object.equipment_condition }}</strong></li>
+  <li class="list-group-item">Inventory System: <strong>{{ object.inventory_system }}</strong></li>
+  <li class="list-group-item">Inventory System Up-To-Date: <strong>{{ object.inventory_system_current }}</strong></li>
+  <li class="list-group-item">User: <strong>{{ object.user }}</strong></li>
+  <li class="list-group-item">Curator: <strong>{{ object.curator }}</strong></li>
+  <li class="list-group-item">Department: <strong>{{ object.department }}</strong></li>
+  <li class="list-group-item">Organization Code: <strong>{{ object.org_code }}</strong></li>
+  <li class="list-group-item">Location: <strong>{{ object.location }}</strong></li>
+  <li class="list-group-item">Vendor: <strong>{{ object.vendor }}</strong></li>
+  <li class="list-group-item">Vendor Serial Number: <strong>{{ object.vendor_serial_number }}</strong></li>
+  <li class="list-group-item">PO: <strong>{{ object.purchase_order }}</strong></li>
+  <li class="list-group-item">Purchase Date: <strong>{{ object.purchase_date }}</strong></li>
+  <li class="list-group-item">Cost: <strong>{{ object.purchase_cost }}</strong></li>
+  <li class="list-group-item">Funded By: <strong>{{ object.funded_by }}</strong></li>
+  <li class="list-group-item">Type (MAC or PC): <strong>{{ object.hardware_type }}</strong></li>
+  <li class="list-group-item">Make: <strong>{{ object.hardware_make }}</strong></li>
+  <li class="list-group-item">Model: <strong>{{ object.hardware_model }}</strong></li>
+  <li class="list-group-item">Serial Number: <strong>{{ object.hardware_serial_number }}</strong></li>
+  <li class="list-group-item">Network Connection: <strong>{{ object.network_connection }}</strong></li>
+  <li class="list-group-item">IP Address: <strong>{{ object.ip_address }}</strong></li>
+  <li class="list-group-item">MAC Address: <strong>{{ object.mac_wired }}</strong></li>
+  <li class="list-group-item">MAC Wireless Address: <strong>{{ object.mac_wireless }}</strong></li>
+  <li class="list-group-item">Processor: <strong>{{ object.processor }}</strong></li>
+  <li class="list-group-item">HDD: <strong>{{ object.harddrive }}</strong></li>
+  <li class="list-group-item">RAM: <strong>{{ object.ram }}</strong></li>
+  <li class="list-group-item">Graphics Card: <strong>{{ object.graphics }}</strong></li>
+  <li class="list-group-item">OS: <strong>{{ object.os }}</strong></li>
+  <li class="list-group-item">OS Architecture: <strong>{{ object.os_arch }}</strong></li>
+  <li class="list-group-item">On Domain: <strong>{{ object.active_directory }}</strong></li>
+  <li class="list-group-item">OU Location: <strong>{{ object.organizational_unit }}</strong></li>
+  <li class="list-group-item">Listed in SCCM: <strong>{{ object.sccm }}</strong></li>
+  <li class="list-group-item">Listed in JAMF: <strong>{{ object.jamf }}</strong></li>
+  <li class="list-group-item">Has SCEP Installed: <strong>{{ object.scep }}</strong></li>
+  <li class="list-group-item">Has Identity Finder: <strong>{{ object.identity_finder }}</strong></li>
+  <li class="list-group-item">Notes: <strong>{{ object.notes }}</strong></li>
+  <li class="list-group-item">Date Added: <strong>{{ object.added_date }}</strong></li>
+  <li class="list-group-item">Added By: <strong>{{ object.added_by }}</strong></li>
+  <li class="list-group-item">Date Modified: <strong>{{ object.modified_date }}</strong></li>
+  <li class="list-group-item">Modified By: <strong>{{ object.modified_by }}</strong></li>
+</ul> -->
 
 {% endblock content %}

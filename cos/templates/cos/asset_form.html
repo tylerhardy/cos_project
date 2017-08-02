@@ -1,13 +1,41 @@
 {% extends "base_generic.html" %}
+{% load bootstrap3 %}
 
 {% block content %}
+<p>
+  {% if hide %}
+    <h1>Create Asset</h1>
+  {% elif duplicate %}
+    <h1>Copy Asset</h1>
+  {% else %}
+    <h1>Modify Asset</h1>
+  {% endif %}
+</p>
+{% if not hide %}
+  <small>
+    <a href="{{ object.get_absolute_url }}">Back</a>
+  </small>
+{% endif %}
+  <small>
+    <a href="{% url 'assets' %}">List Assets</a>
+  </small>
 
-<form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit" />
+<form action="" method="POST" class="form">
+  {% csrf_token %}
+  {% bootstrap_form form %}
 
+  {% if hide %}
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Add Asset</button>
+    {% endbuttons %}
+  {% elif duplicate %}
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Add Asset</button>
+    {% endbuttons %}
+  {% else %}
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Modify</button>
+    {% endbuttons %}
+  {% endif %}
 </form>
 {% endblock %}

@@ -1,20 +1,20 @@
 {% extends "base_generic.html" %}
 
+{% block header %}
+  <div class="jumbotron">
+    <h1><strong>COS Asset Inventory</strong> | Home</h1>
+  </div>
+{% endblock header %}
+
 {% block content %}
-<h1>COS Inventory Home</h1>
-
-<p>Welcome to <em>COS Asset Inventory</em>, a very basic Inventory Management System developed by Tyler Hardy.</p>
-
-<div>
-  {% load static %}
-</div>
-
-<h2>Dynamic content</h2>
-
-<p>The inventory has the following record counts:</p>
-<ul>
-  <li><strong>Assets:</strong> {{ assets.count }}</li>
-  <li><strong>Computer Objects:</strong> {{ computer_objects.count }}</li>
-</ul>
-
+  {% if not user.is_authenticated %}
+    <p>Welcome, this is a very basic Inventory Management System developed by Tyler Hardy.</p>
+    <p>Please login to continue</p>
+  {% else %}
+    <p>Welcome {{ user.get_username }}</p>
+    <p>The inventory system has the following record counts:</p>
+    <ul>
+      <li><strong>Assets:</strong> {{ assets.count }}</li>
+    </ul>
+  {% endif %}
 {% endblock content %}

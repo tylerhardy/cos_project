@@ -1,19 +1,80 @@
 {% extends "base_generic.html" %}
 
+{% load widget_tweaks %}
+
 {% block content %}
-    <h1>Asset List</h1>
+  <h1>Assets</h1>
+  <form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Filter</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.asset_tag.label_tag }}
+          {% render_field filter.form.asset_tag class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.computer_name.label_tag }}
+          {% render_field filter.form.computer_name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.user.label_tag }}
+          {% render_field filter.form.user class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.location.label_tag }}
+          {% render_field filter.form.location class="form-control" %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+        <a class='btn btn-info' href="{% url 'export_assets_csv' %}">Export all assets</a>
+    </div>
+  </form>
 
-    {% if asset_list %}
-    <ul>
-
-      {% for asset in asset_list %}
-      <li>
-        <a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a> ({{asset.user}})
-      </li>
+  <table class="table table-hover table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Asset Tag</th>
+        <th>Computer Name</th>
+        <th>User</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in filter.qs %}
+        <tr>
+          <td><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></td>
+          <td>{{ asset.computer_name }}</td>
+          <td>{{ asset.user }}</td>
+          <td>{{ asset.location }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
       {% endfor %}
-
+    </tbody>
+  </table>
+  {% if is_paginated %}
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
     </ul>
-    {% else %}
-      <p>There are no assets in the inventory system.</p>
-    {% endif %}
-{% endblock %}
+  {% endif %}
+  {% endblock %} 

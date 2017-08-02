@@ -40,6 +40,10 @@ INSTALLED_APPS = [
 
     # My Apps
     'cos.apps.CosConfig',
+    # Third party apps
+    'django_filters',
+    'bootstrap3',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

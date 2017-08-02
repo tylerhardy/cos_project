@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Asset List</h1>
+  <form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+  {% if filter.qs %}
+  <ul>
+  {% for asset in filter.qs %}
+      <li>
+        <a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a> ({{asset.user}})
+      </li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no assets in the inventory system.</p>
+  {% endif %}
+{% endblock %} 
