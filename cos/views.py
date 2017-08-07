@@ -27,21 +27,25 @@ from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 class AssetListView(LoginRequiredMixin, FilterView):
     model = Asset
-    filterset_class = AssetListFilter
+    # filterset_class = AssetListFilter
     template_name = 'cos/asset_list.html'
-    skip_by = 2
+    skip_by = 4
     paginate_by = skip_by
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetListView, self).get_context_data(**kwargs)
         page = self.request.GET.get('page')
+        path = '&'
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in self.request.GET.items() if not key=='page' ])
         list_a =  Asset.objects.order_by('pk').all()
-        paginator = Paginator(list_a, self.skip_by)
+        url_filter = AssetListFilter(self.request.GET, queryset=list_a)
+        paginator = Paginator(url_filter.qs, self.skip_by)
         try:
             items = paginator.page(page)
         except(EmptyPage, InvalidPage):
             items = paginator.page(1)
         context['items'] = items
+        context['path'] = path
         return context
 
 
