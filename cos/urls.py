@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^about/$', views.AboutView.as_view(), name='about'),
     # url(r'^assets/$', FilterView.as_view(filterset_class=AssetListFilter, template_name='cos/asset_list.html'), name='assets'),
     url(r'^assets/$', views.AssetListView.as_view(), name='assets'),
-    # url(r'^assets/$', views.AssetListView.as_view(), name='assets'),
     url(r'^asset/(?P<pk>\d+)$', views.AssetDetailView.as_view(), name='asset-detail'),
 ]
 

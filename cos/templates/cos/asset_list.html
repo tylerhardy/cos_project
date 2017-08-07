@@ -13,8 +13,8 @@
           {% render_field filter.form.asset_tag class="form-control" %}
         </div>
         <div class="form-group col-sm-4 col-md-3">
-          {{ filter.form.computer_name.label_tag }}
-          {% render_field filter.form.computer_name class="form-control" %}
+          {{ filter.form.hardware_name.label_tag }}
+          {% render_field filter.form.hardware_name class="form-control" %}
         </div>
         <div class="form-group col-sm-4 col-md-3">
           {{ filter.form.user.label_tag }}
@@ -36,16 +36,18 @@
     <thead>
       <tr>
         <th>Asset Tag</th>
-        <th>Computer Name</th>
+        <th>Hardware Type</th>
+        <th>Hardware Name</th>
         <th>User</th>
         <th>Location</th>
       </tr>
     </thead>
     <tbody>
-      {% for asset in filter.qs %}
+      {% for asset in items %}
         <tr>
           <td><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></td>
-          <td>{{ asset.computer_name }}</td>
+          <th>{{ asset.hardware_type }}</th>
+          <td>{{ asset.hardware_name }}</td>
           <td>{{ asset.user }}</td>
           <td>{{ asset.location }}</td>
         </tr>
@@ -56,7 +58,7 @@
       {% endfor %}
     </tbody>
   </table>
-  {% if is_paginated %}
+   {% if is_paginated %}
     <ul class="pagination">
       {% if page_obj.has_previous %}
         <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
@@ -77,4 +79,4 @@
       {% endif %}
     </ul>
   {% endif %}
-  {% endblock %} 
+  {% endblock %}

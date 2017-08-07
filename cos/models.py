@@ -3,25 +3,26 @@ from django.contrib.auth.models import User
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 import datetime
 
-computer_role_choice = (
-    ('faculty_main', "Faculty Main Computer"),
-    ('faculty_secondary', "Faculty Secondary Computer"),
-    ('classroom_computer', "Classroom Computer"),
-    ('instrument_computer', "Instrument Computer"),
-    ('lab_research', "Research Lab Computer"),
-    ('lab_open', "Open Lab Computer"),
-    ('lab_closed', "Closed Lab Computer"),
-    ('department_travel', "Department Travel Computer"),
-    ('staff_main', "Staff Main Computer"),
-    ('staff_secondary', "Staff Secondary Computer"),
-    ('stock', "In Stock Computer"),
-    ('surplus', "Surplused Computer"),
-    ('other', "Other Computer"),
+hardware_role_choice = (
+    ('faculty_main', "Faculty Main"),
+    ('faculty_secondary', "Faculty Secondary"),
+    ('classroom_hardware', "Classroom"),
+    ('instrument_hardware', "Instrument"),
+    ('lab_research', "Research Lab"),
+    ('lab_open', "Open Lab"),
+    ('lab_closed', "Closed Lab"),
+    ('department_travel', "Department Travel"),
+    ('staff_main', "Staff Main"),
+    ('staff_secondary', "Staff Secondary"),
+    ('stock', "In Stock"),
+    ('surplus', "Surplused"),
+    ('other', "Other"),
 )
 
 condition_choices = (
     ('new', "New"),
     ('good', "Good"),
+    ('used', "Used"),
     ('worn', "Worn out"),
     ('broken', "Broken"),
 )
@@ -30,6 +31,7 @@ inventory_system_choices = (
     ('pc_lifecycle', "PC Lifecycle"),
     ('property_control', "Property Control"),
     ('old', "Old Inventory Tag"),
+    ('None', 'No Tag')
 )
 
 org_code_choice = (
@@ -61,6 +63,19 @@ department_choice = (
     ('csme','Center of Science and Math Education'),
     ('other','Other or Unknown Department'),
     ('None','No department')
+)
+
+hardware_type_choice = (
+    ('desktop', 'Desktop'),
+    ('laptop', 'Laptop'),
+    ('tablet', 'Tablet'),
+    ('printer', 'Printer'),
+    ('projector', 'Projector'),
+    ('tv', 'TV or Monitor'),
+    ('extron', 'Extron'),
+    ('doc_cam', 'Document Camera'),
+    ('camera', 'Camera'),
+    ('other', 'Other'),
 )
 
 os_choice = (
@@ -99,6 +114,7 @@ os_choice = (
 os_arch_choice = (
     ('x86','32-Bit'),
     ('x64','64-Bit'),
+    ('other','Other'),
     ('none','No OS installed')
 )
 
@@ -107,33 +123,33 @@ connection_choice = (
     ('WL', 'Wireless'),
     ('none', 'No Network Connection')
 )
-# ['asset_tag', 'computer_name', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'vendor_serial_number', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'hardware_serial_number', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
+# ['asset_tag', 'hardware_name', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'vendor_serial_number', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'hardware_serial_number', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
 
 # Create your models here.
 class Asset(models.Model):
     """The Hardware info of the asset"""
     asset_tag = models.CharField(max_length=200, unique=True)
-    computer_name = models.CharField(max_length=200, blank=True)
-    equipment_role = models.CharField("What is the primary role of the computer", max_length=200, blank=True, choices=computer_role_choice)
-    equipment_condition = models.CharField("Hardware condition", max_length=200, blank=True, choices=condition_choices)
-    inventory_system = models.CharField("Inventory System", max_length=200, blank=True, choices=inventory_system_choices)
-    inventory_system_current = models.BooleanField("Inventory System Up-To-Date", default=False)
-    user = models.CharField("Primary User", max_length=200, blank=True)
-    curator = models.CharField("Who is responsible for the hardware", max_length=200, blank=True)
-    department = models.CharField("Department who owns the hardware", max_length=200, blank=True, choices=department_choice)
-    org_code = models.CharField("Orginational Code", max_length=200, blank=True, choices=org_code_choice)
-    location = models.CharField("Location of the hardware", max_length=200, blank=True)
-    vendor = models.CharField("Vendor the hardware was purchased through",max_length=200, blank=True)
-    vendor_serial_number = models.CharField("Vender's serial number", max_length=200, unique=True, blank=True, null=True)
+    hardware_name = models.CharField(max_length=200, blank=True)
+    hardware_role = models.CharField(max_length=200, blank=True, choices=hardware_role_choice)
+    hardware_condition = models.CharField("Condition", max_length=200, blank=True, choices=condition_choices)
+    inventory_system = models.CharField("Inventory system", max_length=200, blank=True, choices=inventory_system_choices)
+    inventory_system_current = models.BooleanField("Inventory system Up-To-Date", default=False)
+    user = models.CharField("Primary user", max_length=200, blank=True)
+    curator = models.CharField("Curator", max_length=200, blank=True)
+    department = models.CharField("Department", max_length=200, blank=True, choices=department_choice)
+    org_code = models.CharField("Department orginational code", max_length=200, blank=True, choices=org_code_choice)
+    location = models.CharField("Location", max_length=200, blank=True)
+    vendor = models.CharField("Vendor",max_length=200, blank=True)
+    vendor_serial_number = models.CharField("Vendor serial number", max_length=200, unique=True, blank=True, null=True)
     purchase_order = models.CharField("PO", max_length=200, blank=True)
     purchase_date = models.DateTimeField("Date of purchase", blank=True, null=True)
-    purchase_cost = models.CharField("Cost of hardware", max_length=200, blank=True)
-    funded_by = models.CharField("Source of funds used to purchase the hardware", max_length=200, blank=True)
-    hardware_type = models.CharField("Mac or PC", max_length=200, blank=True)
+    purchase_cost = models.CharField("Cost", max_length=200, blank=True)
+    funded_by = models.CharField("Hardware source of funds", max_length=200, blank=True)
+    hardware_type = models.CharField(max_length=200, choices=hardware_type_choice)
     hardware_make = models.CharField(max_length=200, blank=True)
     hardware_model = models.CharField(max_length=200, blank=True)
     hardware_serial_number = models.CharField(max_length=200, unique=True, blank=True, null=True)
-    network_connection = models.CharField("Primary connection used by computer", max_length=30, choices=connection_choice, blank=True)
+    network_connection = models.CharField("Network connection", max_length=30, choices=connection_choice, blank=True)
     ip_address = models.GenericIPAddressField(protocol='IPv4', blank=True, null=True)
     mac_wired = models.CharField(max_length=200, unique=True, blank=True, null=True)
     mac_wireless = models.CharField(max_length=200, unique=True, blank=True, null=True)
@@ -143,11 +159,11 @@ class Asset(models.Model):
     graphics = models.CharField(max_length=200, blank=True)
     os = models.CharField("Installed OS", max_length=200, choices=os_choice, blank=True)
     os_arch = models.CharField("OS architecture", max_length=30, choices=os_arch_choice, blank=True)
-    active_directory = models.BooleanField("Computer on the Domain", default=False)
-    organizational_unit = models.CharField("OU location of the computer", max_length=200, blank=True)
-    sccm = models.BooleanField("Computer is listed in SCCM", default=False)
-    jamf = models.BooleanField("Computer is listed in JAMF", default=False)
-    scep = models.BooleanField("Computer has SCEP installed and up-to-date", default=False)
+    active_directory = models.BooleanField("Managed on the Domain", default=False)
+    organizational_unit = models.CharField("OU location", max_length=200, blank=True)
+    sccm = models.BooleanField("Listed in SCCM", default=False)
+    jamf = models.BooleanField("Listed in JAMF", default=False)
+    scep = models.BooleanField("SCEP installed and up-to-date", default=False)
     identity_finder = models.BooleanField("Identity Finder installed", default=False)
     notes = models.TextField(blank=True)
     added_date = models.DateTimeField(auto_now_add=True)

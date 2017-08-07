@@ -23,11 +23,27 @@ class AboutView(generic.TemplateView):
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_filters.views import FilterView
 from .filters import AssetListFilter
+from django.core.paginator import Paginator, EmptyPage, InvalidPage 
+
 class AssetListView(LoginRequiredMixin, FilterView):
     model = Asset
     filterset_class = AssetListFilter
     template_name = 'cos/asset_list.html'
-    paginate_by = 4
+    skip_by = 2
+    paginate_by = skip_by
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AssetListView, self).get_context_data(**kwargs)
+        page = self.request.GET.get('page')
+        list_a =  Asset.objects.order_by('pk').all()
+        paginator = Paginator(list_a, self.skip_by)
+        try:
+            items = paginator.page(page)
+        except(EmptyPage, InvalidPage):
+            items = paginator.page(1)
+        context['items'] = items
+        return context
+
 
 class AssetDetailView(LoginRequiredMixin, generic.DetailView):
     model = Asset
@@ -37,7 +53,7 @@ class AssetCreate(LoginRequiredMixin, CreateView):
     form_class = AssetCreateForm
     model = Asset
     template_name = 'cos/asset_form.html'
-    # fields = ['asset_tag', 'computer_name', 'hardware_serial_number', 'vendor_serial_number', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
+    # fields = ['asset_tag', 'hardware_name', 'hardware_serial_number', 'vendor_serial_number', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetCreate, self).get_context_data(**kwargs)
@@ -60,7 +76,7 @@ class AssetCreate(LoginRequiredMixin, CreateView):
 class AssetUpdate(LoginRequiredMixin, UpdateView):
     model = Asset
     template_name = 'cos/asset_form.html'
-    fields = ['asset_tag', 'computer_name', 'hardware_serial_number', 'vendor_serial_number', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
+    fields = ['asset_tag', 'hardware_name', 'hardware_serial_number', 'vendor_serial_number', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
 
     def form_valid(self, form):
         asset_update_form = form.save(commit=False)
@@ -74,7 +90,7 @@ class AssetDuplicate(LoginRequiredMixin, UpdateView):
     model = Asset
     template_name = 'cos/asset_form.html'
     success_url = reverse_lazy('assets')
-    fields = ['asset_tag', 'computer_name', 'hardware_serial_number', 'vendor_serial_number', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
+    fields = ['asset_tag', 'hardware_name', 'hardware_serial_number', 'vendor_serial_number', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetDuplicate, self).get_context_data(**kwargs)
@@ -107,9 +123,9 @@ def export_assets_csv(request):
     response['Content-Disposition'] = 'attachment; filename="assets.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['asset_tag', 'computer_name', 'hardware_serial_number', 'vendor_serial_number', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes', 'added_date', 'added_by', 'modified_date', 'modified_by'])
+    writer.writerow(['asset_tag', 'hardware_name', 'hardware_serial_number', 'vendor_serial_number', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes', 'added_date', 'added_by', 'modified_date', 'modified_by'])
 
-    assets = Asset.objects.all().values_list('asset_tag', 'computer_name', 'hardware_serial_number', 'vendor_serial_number', 'equipment_role', 'equipment_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes', 'added_date', 'added_by', 'modified_date', 'modified_by')
+    assets = Asset.objects.all().values_list('asset_tag', 'hardware_name', 'hardware_serial_number', 'vendor_serial_number', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes', 'added_date', 'added_by', 'modified_date', 'modified_by')
     for asset in assets:
         writer.writerow(asset)
 

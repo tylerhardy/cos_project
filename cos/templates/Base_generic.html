@@ -29,10 +29,8 @@
             <li><a href="{% url 'about' %}">About</a></li>
           </ul>
           <ul class="nav navbar-nav">
-            {% if user.is_authenticated %}
-              <li><a href="{% url 'assets' %}">List Assets</a></li>
-              <li><a href="{% url 'asset_create' %}">Add Asset</a></li>
-            {% endif %} 
+            <li><a href="{% url 'assets' %}">List Assets</a></li>
+            <li><a href="{% url 'asset_create' %}">Add Asset</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
