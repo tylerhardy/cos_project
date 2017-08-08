@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse # Used to generate URLs by reversing the URL patterns
+from django.urls import reverse
 import datetime
 
+# Hardware role
 hardware_role_choice = (
     ('faculty_main', "Faculty Main"),
     ('faculty_secondary', "Faculty Secondary"),
@@ -19,6 +20,7 @@ hardware_role_choice = (
     ('other', "Other"),
 )
 
+# Condition of hardware
 condition_choices = (
     ('new', "New"),
     ('good', "Good"),
@@ -27,6 +29,7 @@ condition_choices = (
     ('broken', "Broken"),
 )
 
+# Inventory system that hardware belongs to
 inventory_system_choices = (
     ('pc_lifecycle', "PC Lifecycle"),
     ('property_control', "Property Control"),
@@ -34,6 +37,7 @@ inventory_system_choices = (
     ('None', 'No Tag')
 )
 
+# Department organization codes
 org_code_choice = (
     ('25000',"25000 - Dean's Office"),
     ('25100','25100 - Botany'),
@@ -49,6 +53,7 @@ org_code_choice = (
     ('None','No organization code'),
 )
 
+# College of Science Departments
 department_choice = (
     ('dean',"Dean's office"),
     ('bot','Botany'),
@@ -65,6 +70,7 @@ department_choice = (
     ('None','No department')
 )
 
+# Hardware Type
 hardware_type_choice = (
     ('desktop', 'Desktop'),
     ('laptop', 'Laptop'),
@@ -78,6 +84,7 @@ hardware_type_choice = (
     ('other', 'Other'),
 )
 
+# Operating Systems
 os_choice = (
     ('osx_10.5','Mac OS X Leopard'),
     ('osx_10.6','Mac OS X Snow Leopard'),
@@ -111,6 +118,7 @@ os_choice = (
     ('none','No OS installed')
 )
 
+# OS Architecture
 os_arch_choice = (
     ('x86','32-Bit'),
     ('x64','64-Bit'),
@@ -118,16 +126,18 @@ os_arch_choice = (
     ('none','No OS installed')
 )
 
+# Hardware network connection
 connection_choice = (
     ('WD', 'Wired'),
     ('WL', 'Wireless'),
     ('none', 'No Network Connection')
 )
-# ['asset_tag', 'hardware_name', 'hardware_role', 'hardware_condition', 'inventory_system', 'inventory_system_current', 'user', 'curator', 'department', 'org_code', 'location', 'vendor', 'vendor_serial_number', 'purchase_order', 'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type', 'hardware_make', 'hardware_model', 'hardware_serial_number', 'network_connection', 'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram', 'graphics', 'os', 'os_arch', 'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder', 'notes']
 
 # Create your models here.
 class Asset(models.Model):
-    """The Hardware info of the asset"""
+    """
+    Asset model of the hardware in the inventory system
+    """
     asset_tag = models.CharField(max_length=200, unique=True)
     hardware_name = models.CharField(max_length=200, blank=True)
     hardware_role = models.CharField(max_length=200, blank=True, choices=hardware_role_choice)
@@ -180,14 +190,16 @@ class Asset(models.Model):
         return reverse('asset-detail', args=[str(self.id)])
 
     def __str__(self):
-        """Return a string representation of the model."""
+        """
+        Return a string representation of the model.
+        """
         return self.asset_tag
 
     def save(self, *args, **kwargs):
+        # Create Object
         if self.pk is None:
-            # Create Object
             self.added_date = datetime.datetime.now()
+        # Modify Object
         else:
-            # Modify Object
             self.modified_date = datetime.datetime.now()
         super(Asset, self).save(*args, **kwargs)
