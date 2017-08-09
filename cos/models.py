@@ -22,10 +22,8 @@ hardware_role_choice = (
 
 # Condition of hardware
 condition_choices = (
-    ('new', "New"),
     ('good', "Good"),
-    ('used', "Used"),
-    ('worn', "Worn out"),
+    ('old', "Old"),
     ('broken', "Broken"),
 )
 

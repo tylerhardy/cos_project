@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django import forms
 
 from .models import Asset
-from .forms import AssetForm, AssetCreateForm
+from .forms import AssetForm
 
 from datetime import datetime
 
@@ -68,16 +69,36 @@ class AssetDetailView(LoginRequiredMixin, generic.DetailView):
     model = Asset
     template_name = 'cos/asset_detail.html'
 
-class AssetCreate(LoginRequiredMixin, CreateView):
+from django.forms.models import modelform_factory
+
+class ModelFormWidgetMixin(object):
+    def get_form_class(self):
+        return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
+
+
+class AssetCreate(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
     """
     Generic CreateView for adding assets to the database.
     Modified [get_context_data] to hide links in asset_form.html.
     Modified [form_valid] to log who created the asset.
     """
-    # Using forms.py in order to use widgets
-    form_class = AssetCreateForm
     model = Asset
     template_name = 'cos/asset_form.html'
+    fields = [
+        'asset_tag', 'hardware_name', 'hardware_serial_number',
+        'vendor_serial_number', 'hardware_role', 'hardware_condition',
+        'inventory_system', 'inventory_system_current', 'user', 'curator',
+        'department', 'org_code', 'location', 'vendor', 'purchase_order',
+        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+        'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
+        'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
+        'graphics', 'os', 'os_arch', 'active_directory',
+        'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder',
+        'notes'
+        ]
+    widgets = {
+        'purchase_date': forms.DateInput(attrs={'type': 'date'}),
+    }
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetCreate, self).get_context_data(**kwargs)
@@ -90,7 +111,8 @@ class AssetCreate(LoginRequiredMixin, CreateView):
         asset_create_form = form.save()
         return super(AssetCreate, self).form_valid(form)
 
-class AssetUpdate(LoginRequiredMixin, UpdateView):
+
+class AssetUpdate(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     """
     Generic UpdateView for modifying existing assets.
     Modified [form_valid] to log who modified the asset.
@@ -109,6 +131,14 @@ class AssetUpdate(LoginRequiredMixin, UpdateView):
         'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder',
         'notes'
         ]
+    widgets = {
+        'purchase_date': forms.DateInput(attrs={'type': 'date'}),
+    }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AssetUpdate, self).get_context_data(**kwargs)
+        context['modify'] = True
+        return context
 
     def form_valid(self, form):
         asset_update_form = form.save(commit=False)
@@ -123,21 +153,10 @@ class AssetDuplicate(LoginRequiredMixin, UpdateView):
     Modified [get_context_data] to add 'duplicate' variable to context.
     Modified [post] remove the source asset pk from the duplicated asset.
     """
+    form_class = AssetForm
     model = Asset
     template_name = 'cos/asset_form.html'
     success_url = reverse_lazy('assets')
-    fields = [
-        'asset_tag', 'hardware_name', 'hardware_serial_number',
-        'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'inventory_system_current', 'user', 'curator',
-        'department', 'org_code', 'location', 'vendor', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
-        'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
-        'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
-        'graphics', 'os', 'os_arch', 'active_directory',
-        'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder',
-        'notes'
-        ]
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetDuplicate, self).get_context_data(**kwargs)
@@ -152,7 +171,6 @@ class AssetDuplicate(LoginRequiredMixin, UpdateView):
             new_asset.added_by = request.user
             form.save()
             return redirect('assets')
-
         context = {"form": form,}
         return render(request, "cos/asset_form.html", context)
 

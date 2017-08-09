@@ -26,13 +26,15 @@
           {% render_field filter.form.location class="form-control" %}
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">
-        <span class="glyphicon glyphicon-search"></span> Search
-      </button>
-        <a class='btn btn-info' href="{% url 'export_assets_csv' %}">Export all assets</a>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">{% bootstrap_icon "search" %} Search</button>
+        <a href="{% url 'assets' %}" class='btn btn-default' role="button">{% bootstrap_icon "refresh" %} Clear</a>
+        <a href="{% url 'export_assets_csv' %}" class='btn btn-info' role="button">{% bootstrap_icon "download-alt" %} Export</a>
+      </div>
     </div>
   </form>
 
+<div class="table-responsive">
   <table class="table table-hover table-bordered table-striped">
     <thead>
       <tr>
@@ -46,8 +48,8 @@
     <tbody>
       {% for asset in items %}
         <tr>
-          <td><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></td>
-          <th>{{ asset.hardware_type }}</th>
+          <th><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></th>
+          <td>{{ asset.hardware_type }}</td>
           <td>{{ asset.hardware_name }}</td>
           <td>{{ asset.user }}</td>
           <td>{{ asset.location }}</td>
@@ -59,5 +61,6 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
   {% bootstrap_pagination items extra=request.GET.urlencode %}
   {% endblock %}

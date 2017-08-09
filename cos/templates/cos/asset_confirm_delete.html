@@ -3,18 +3,18 @@
 
 {% block content %}
 
-<h1>Delete Asset</h1>
-
+<p><h2><strong>Delete Asset</strong></h2></p>
 <p>
-    <a href="{{ asset.get_absolute_url }}">Back</a>
-    <a href="{% url 'assets' %}">List Assets</a>
+  <div class="btn-group">
+    <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+    <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  </div>
 </p>
 <p>Are you sure you want to delete the asset: <strong>{{ asset }}?</strong></p>
 <form action="" method="POST" class="form">
   {% csrf_token %}
   {% buttons %}
-    <button name="submit" class="btn btn-primary">Yes, delete</button>
+    <button class='btn btn-danger' type="submit">{% bootstrap_icon "remove" %} Confirm deletion</button>
   {% endbuttons %}
 </form>
-
 {% endblock %}
