@@ -72,6 +72,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'inventory.wsgi.application'
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8d50c88a78994a4104df87f506c7dc8824f5b5a5
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -108,5 +112,13 @@ USE_TZ = True
 LOGIN_REDIRECT_URL = '/'
 
 
+<<<<<<< HEAD
+=======
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+>>>>>>> 8d50c88a78994a4104df87f506c7dc8824f5b5a5
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
