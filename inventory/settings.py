@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrap3',
     'widget_tweaks',
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Third Party Apps
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'inventory.urls'

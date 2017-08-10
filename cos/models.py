@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 import datetime
+from simple_history.models import HistoricalRecords
 
 # Hardware role
 hardware_role_choice = (
@@ -183,6 +184,7 @@ class Asset(models.Model):
     deleted_by = models.ForeignKey(User, related_name='deleted_user', blank=True, null=True)
     audited_date = models.DateTimeField(blank=True, null=True)
     audited_by = models.ForeignKey(User, related_name='audited_user', blank=True, null=True)
+    history = HistoricalRecords()
 
     def get_absolute_url(self):
         return reverse('asset-detail', args=[str(self.id)])

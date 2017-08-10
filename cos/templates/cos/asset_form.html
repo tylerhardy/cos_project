@@ -11,6 +11,7 @@
     <h2><strong>Copy Asset</strong></h2>
   {% endif %}
 </p>
+<form action="" method="POST" class="form">
 <p>
   <div class="btn-group">
     {% if hide %}
@@ -30,7 +31,6 @@
     {% endif %}
   </div>
 </p>
-<form action="" method="POST" class="form">
   {% csrf_token %}
   {% bootstrap_form form %}
   <p>
