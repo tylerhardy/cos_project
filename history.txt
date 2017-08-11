@@ -68,6 +68,8 @@ VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.4
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Developer
 source /usr/local/bin/virtualenvwrapper.sh
+alias ve="workon "
+alias d="deactivate"
 """
 
 `save file and exit`
@@ -87,6 +89,8 @@ cat ~/.ssh/id_rsa.pub
 `copy hash to github new ssh key`
 git config --global user.name "Tyler Hardy"
 git config --global user.email "tylerhardy@gmail.com"
+ws
+git clone git@github.com:tylerhardy/inventory_project.git
 
 [Setup POSTGRESS PSQL]
 sudo -u postgres psql
@@ -104,3 +108,24 @@ pip3 -V
 sudo pip3 install --upgrade pip
 sudo pip3 install virtualenv
 sudo pip3 install virtualenvwrapper
+mkvirtualenv inv_prod
+nano $VIRTUAL_ENV/bin/postactivate
+export DJANGO_SETTINGS_MODULE="inventory.settings.production"
+
+nano $VIRTUAL_ENV/bin/predeactivate
+unset DJANGO_SETTINGS_MODULE
+
+
+[Setup Django Requirments]
+pip install -r requirements/production.txt
+`modify settings`
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py collectstatic
+
+[firewall]
+sudo apt-get install ufw
+sudo ufw allow 8000
+python manage.py runserver 0.0.0.0:8000
+
