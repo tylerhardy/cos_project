@@ -129,3 +129,36 @@ sudo apt-get install ufw
 sudo ufw allow 8000
 python manage.py runserver 0.0.0.0:8000
 
+[Testing Gunicorn]
+cd ~/Developer/inventory_project
+gunicorn --bind 0.0.0.0:8000 inventory.wsgi
+`test webiste in browser`
+deactivate
+
+[Create Gunicorn systemd Service File]
+sudo nano /etc/systemd/system/gunicorn.service
+`paste the following:`
+"""
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/home/pi/Developer/inventory_project
+ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/inventory_project/inventory.sock inventory.wsgi:cos
+
+[Install]
+WantedBy=multi-user.target
+"""
+`save and exit nano`
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+
+[Check for the Gunicorn Socket File]
+sudo systemctl status gunicorn
+ls /home/pi/Developer/inventory_project
+
+sudo journalctl -u gunicorn
