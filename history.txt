@@ -148,7 +148,7 @@ After=network.target
 User=pi
 Group=www-data
 WorkingDirectory=/home/pi/Developer/inventory_project
-ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/inventory_project/inventory.sock inventory.wsgi:cos
+ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/inventory_project/inventory.sock inventory.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -159,6 +159,39 @@ sudo systemctl enable gunicorn
 
 [Check for the Gunicorn Socket File]
 sudo systemctl status gunicorn
+`verify that inventory.sock is listed`
 ls /home/pi/Developer/inventory_project
-
+`if issue use troubleshooting log`
 sudo journalctl -u gunicorn
+`if changes made restart daemon`
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
+
+[sudo systemctl restart gunicorn]
+sudo nano /etc/nginx/sites-available/inventory_project
+
+"""
+server {
+    listen 80;
+    server_name 137.190.117.94;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/pi/Developer/inventory_project/inventory;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/pi/Developer/inventory_project/inventory.sock;
+    }
+}
+"""
+
+sudo ln -s /etc/nginx/sites-available/inventory_project /etc/nginx/sites-enabled
+sudo nginx -t
+sudo systemctl restart nginx
+
+sudo ufw delete allow 8000
+sudo ufw allow 'Nginx Full'
+
+
