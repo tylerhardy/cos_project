@@ -1,3 +1,7 @@
+Sites used:
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+
+
 [at physical rpi]
 `log into user 'pi'`
 sudo raspi-config
@@ -185,7 +189,25 @@ server {
         proxy_pass http://unix:/home/pi/Developer/inventory_project/inventory.sock;
     }
 }
+
+server {
+    listen 80;
+    server_name ty128-rpi3.users.weber.edu;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/pi/Developer/inventory_project/inventory;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/pi/Developer/inventory_project/inventory.sock;
+    }
+}
 """
+
+sudo nano /etc/nginx/nginx.conf
+`uncomment conf where 'server_names_hash_bucket_size 64;'`
 
 sudo ln -s /etc/nginx/sites-available/inventory_project /etc/nginx/sites-enabled
 sudo nginx -t
@@ -194,4 +216,6 @@ sudo systemctl restart nginx
 sudo ufw delete allow 8000
 sudo ufw allow 'Nginx Full'
 
-
+`done`
+[additional configs]
+https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04
