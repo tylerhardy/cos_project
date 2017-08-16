@@ -29,8 +29,7 @@
             <li><a href="{% url 'about' %}">About</a></li>
           </ul>
           <ul class="nav navbar-nav">
-            <li><a href="{% url 'assets' %}">List Assets</a></li>
-            <li><a href="{% url 'asset_create' %}">Add Asset</a></li>
+            <li><a href="{% url 'assets' %}">Assets</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
