@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django import forms
 
@@ -29,11 +29,13 @@ class AboutView(generic.TemplateView):
     """
     template_name = 'about.html'
 
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 
 from django_filters.views import FilterView
 from .filters import AssetListFilter
+
 
 class AssetListView(LoginRequiredMixin, FilterView):
     """
@@ -62,6 +64,7 @@ class AssetListView(LoginRequiredMixin, FilterView):
         context['items'] = items
         return context
 
+
 class AssetDetailView(LoginRequiredMixin, generic.DetailView):
     """
     Generic DetailView to provide information of the asset.
@@ -70,6 +73,7 @@ class AssetDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'cos/asset_detail.html'
 
 from django.forms.models import modelform_factory
+
 
 class ModelFormWidgetMixin(object):
     def get_form_class(self):
@@ -87,9 +91,9 @@ class AssetCreate(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
     fields = [
         'asset_tag', 'hardware_name', 'hardware_serial_number',
         'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'inventory_system_current', 'user', 'curator',
-        'department', 'org_code', 'location', 'vendor', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+        'inventory_system', 'user', 'curator', 'department', 'org_code',
+        'location', 'vendor', 'requisition_number', 'purchase_order',
+        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
         'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
         'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
         'graphics', 'os', 'os_arch', 'active_directory',
@@ -122,9 +126,9 @@ class AssetUpdate(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     fields = [
         'asset_tag', 'hardware_name', 'hardware_serial_number',
         'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'inventory_system_current', 'user', 'curator',
-        'department', 'org_code', 'location', 'vendor', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+        'inventory_system', 'user', 'curator', 'department', 'org_code',
+        'location', 'vendor', 'requisition_number', 'purchase_order',
+        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
         'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
         'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
         'graphics', 'os', 'os_arch', 'active_directory',
@@ -147,6 +151,32 @@ class AssetUpdate(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
         asset_update_form = form.save()
         return super(AssetUpdate, self).form_valid(form)
 
+class AssetAudit(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
+    """
+    Generic UpdateView for Auditing Assets
+    Modified [form_valid] to log who audited the asset.
+    """
+    model = Asset
+    template_name = 'cos/asset_form.html'
+    fields = [
+        'notes','audited_by','audited_date'
+        ]
+    widgets = {
+        'audited_date': forms.DateInput(attrs={'type': 'date'}),
+        # 'audited_date': forms.DateInput(attrs={'type': 'date', 'readonly':'readonly'}),
+    }
+    def get_context_data(self, *args, **kwargs):
+        context = super(AssetAudit, self).get_context_data(**kwargs)
+        context['audit'] = True
+        return context
+
+    def form_valid(self, form):
+        asset_update_form = form.save(commit=False)
+        asset_update_form.audited_by = self.request.user
+        asset_update_form.audited_date = datetime.now()
+        asset_update_form = form.save()
+        return super(AssetAudit, self).form_valid(form)
+
 class AssetDuplicate(LoginRequiredMixin, UpdateView):
     """
     Generic UpdateView for duplicating already created assets.
@@ -156,7 +186,7 @@ class AssetDuplicate(LoginRequiredMixin, UpdateView):
     form_class = AssetForm
     model = Asset
     template_name = 'cos/asset_form.html'
-    success_url = reverse_lazy('assets')
+    # success_url = reverse_lazy('assets')
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetDuplicate, self).get_context_data(**kwargs)
@@ -166,11 +196,18 @@ class AssetDuplicate(LoginRequiredMixin, UpdateView):
     def post(self, request, pk, *args, **kwargs):
         new_asset = get_object_or_404(Asset, pk = pk)
         new_asset.pk = None
-        form =  AssetForm(request.POST or None, instance = new_asset)
+        new_asset.added_by = None
+        new_asset.added_date = None
+        new_asset.modified_by = None
+        new_asset.modified_date = None
+        new_asset.audited_by = None
+        new_asset.audited_date = None
+        form = AssetForm(request.POST or None, instance = new_asset)
         if form.is_valid():
             new_asset.added_by = request.user
             form.save()
-            return redirect('assets')
+            # return redirect('assets')
+            return self.form_valid(form)
         context = {"form": form,}
         return render(request, "cos/asset_form.html", context)
 
@@ -195,9 +232,9 @@ def export_assets_csv(request):
     writer.writerow([
         'asset_tag', 'hardware_name', 'hardware_serial_number',
         'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'inventory_system_current', 'user', 'curator',
-        'department', 'org_code', 'location', 'vendor', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+        'inventory_system', 'user', 'curator', 'department', 'org_code',
+        'location', 'vendor', 'requisition_number', 'purchase_order',
+        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
         'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
         'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
         'graphics', 'os', 'os_arch', 'active_directory',
@@ -207,9 +244,9 @@ def export_assets_csv(request):
     assets = Asset.objects.all().values_list(
         'asset_tag', 'hardware_name', 'hardware_serial_number',
         'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'inventory_system_current', 'user', 'curator',
-        'department', 'org_code', 'location', 'vendor', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+        'inventory_system', 'user', 'curator', 'department', 'org_code',
+        'location', 'vendor', 'requisition_number', 'purchase_order',
+        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
         'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
         'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
         'graphics', 'os', 'os_arch', 'active_directory',

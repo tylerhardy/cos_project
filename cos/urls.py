@@ -21,6 +21,9 @@ urlpatterns = [
     # Class UpdateView with modified [form_valid] function
     url(r'^asset/(?P<pk>\d+)/edit/$', views.AssetUpdate.as_view(), name='asset_update'),
 
+    # Class UpdateView with modified [form_valid] function
+    url(r'^asset/(?P<pk>\d+)/audit/$', views.AssetAudit.as_view(), name='asset_audit'),
+
     # Class UpdateView with modified [get_context_data] and [post] functions
     url(r'^asset/(?P<pk>\d+)/duplicate/$', views.AssetDuplicate.as_view(), name='asset_duplicate'),
 

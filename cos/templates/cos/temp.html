@@ -1,27 +1,13 @@
-{% extends "base_generic.html" %}
-{% load bootstrap3 %}
+{% if object.inventory_system_current and object.inventory_system_current.strip %}
+<tr class="success">
+{% else %}
+<tr class="danger">
+{% endif %}
+  <th>Inventory System Up-To-Date</th>
+  <td>{{ object.inventory_system_current }}</td>
+</tr>
 
-{% block content %}
-<p><h1><strong>{{ object.asset_tag }}</strong></h1></p>
-<p>
-  <div class="btn-group">
-    <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "edit" %} Edit</a>
-    <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
-    <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-    <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
-    <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-    <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
-  </div>
-</p>
-<p>
-<div class="table-responsive">
-  <table class="table table-bordered table-condensed table-hover table-striped">
-    <thead>
-      <tr>
-        <th colspan="2"><center>{{ object.asset_tag }} Hardware Information</center></th>
-      </tr>
-    </thead>
-    <tbody>
+
       {% if object.hardware_name and object.hardware_name.strip %}
       <tr class="success">
       {% else %}
@@ -53,6 +39,14 @@
       {% endif %}
         <th>Inventory System</th>
         <td>{{ object.inventory_system }}</td>
+      </tr>
+      {% if object.inventory_system_current and object.inventory_system_current.strip %}
+      <tr class="success">
+      {% else %}
+      <tr class="danger">
+      {% endif %}
+        <th>Inventory System Up-To-Date</th>
+        <td>{{ object.inventory_system_current }}</td>
       </tr>
       {% if object.user and object.user.strip %}
       <tr class="success">
@@ -104,21 +98,11 @@
       </tr>
       {% if object.vendor_serial_number and object.vendor_serial_number.strip %}
       <tr class="success">
-      {% elif object.hardware_serial_number and object.hardware_serial_number.strip %}
-      <tr class="info">
       {% else %}
       <tr class="danger">
       {% endif %}
         <th>Vendor Serial Number</th>
         <td>{{ object.vendor_serial_number }}</td>
-      </tr>
-      {% if object.requisition_number and object.requisition_number.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Requisition Number</th>
-        <td>{{ object.requisition_number }}</td>
       </tr>
       {% if object.purchase_order and object.purchase_order.strip %}
       <tr class="success">
@@ -152,22 +136,12 @@
         <th>Funded By</th>
         <td>{{ object.funded_by }}</td>
       </tr>
-      {% if object.is_eligible_upgrade == 'is_eligible' %}
-      <tr class="success">
-      {% elif object.is_eligible_upgrade == 'almost_eligible' %}
-      <tr class="warning">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Upgrade Eligibility</th>
-        <td>{{ object.eligible_upgrade_date }}</td>
-      </tr>
       {% if object.hardware_type and object.hardware_type.strip %}
       <tr class="success">
       {% else %}
       <tr class="danger">
       {% endif %}
-        <th>Hardware Type</th>
+        <th>Type (MAC or PC)</th>
         <td>{{ object.hardware_type }}</td>
       </tr>
       {% if object.hardware_make and object.hardware_make.strip %}
@@ -175,7 +149,7 @@
       {% else %}
       <tr class="danger">
       {% endif %}
-        <th>Hardware Make</th>
+        <th>Make</th>
         <td>{{ object.hardware_make }}</td>
       </tr>
       {% if object.hardware_model and object.hardware_model.strip %}
@@ -183,17 +157,15 @@
       {% else %}
       <tr class="danger">
       {% endif %}
-        <th>Hardware Model</th>
+        <th>Model</th>
         <td>{{ object.hardware_model }}</td>
       </tr>
       {% if object.hardware_serial_number and object.hardware_serial_number.strip %}
       <tr class="success">
-      {% elif object.vendor_serial_number and object.vendor_serial_number.strip %}
-      <tr class="info">
       {% else %}
       <tr class="danger">
       {% endif %}
-        <th>Hardware Serial Number</th>
+        <th>Serial Number</th>
         <td>{{ object.hardware_serial_number }}</td>
       </tr>
       {% if object.network_connection and object.network_connection.strip %}
@@ -214,20 +186,16 @@
       </tr>
       {% if object.mac_wired and object.mac_wired.strip %}
       <tr class="success">
-      {% elif object.mac_wireless and object.mac_wireless.strip %}
-      <tr class="info">
       {% else %}
-      <tr class="danger">
+      <tr class="info">
       {% endif %}
         <th>MAC Address</th>
         <td>{{ object.mac_wired }}</td>
       </tr>
       {% if object.mac_wireless and object.mac_wireless.strip %}
       <tr class="success">
-      {% elif object.mac_wired and object.mac_wired.strip %}
-      <tr class="info">
       {% else %}
-      <tr class="danger">
+      <tr class="info">
       {% endif %}
         <th>MAC Wireless Address</th>
         <td>{{ object.mac_wireless }}</td>
@@ -280,7 +248,7 @@
         <th>OS Architecture</th>
         <td>{{ object.os_arch }}</td>
       </tr>
-      {% if object.active_directory and object.active_directory.strip or object.active_directory == True %}
+      {% if object.active_directory and object.active_directory.strip %}
       <tr class="success">
       {% else %}
       <tr class="danger">
@@ -296,7 +264,7 @@
         <th>OU Location</th>
         <td>{{ object.organizational_unit }}</td>
       </tr>
-      {% if object.sccm and object.sccm.strip or object.sccm == True %}
+      {% if object.sccm and object.sccm.strip %}
       <tr class="success">
       {% else %}
       <tr class="info">
@@ -304,7 +272,7 @@
         <th>Listed in SCCM</th>
         <td>{{ object.sccm }}</td>
       </tr>
-      {% if object.jamf and object.jamf.strip or object.jamf == True %}
+      {% if object.jamf and object.jamf.strip %}
       <tr class="success">
       {% else %}
       <tr class="info">
@@ -312,7 +280,7 @@
         <th>Listed in JAMF</th>
         <td>{{ object.jamf }}</td>
       </tr>
-      {% if object.scep and object.scep.strip or object.scep == True %}
+      {% if object.scep and object.scep.strip %}
       <tr class="success">
       {% else %}
       <tr class="info">
@@ -320,7 +288,7 @@
         <th>Has SCEP Installed</th>
         <td>{{ object.scep }}</td>
       </tr>
-      {% if object.identity_finder and object.identity_finder.strip or object.identity_finder == True %}
+      {% if object.identity_finder and object.identity_finder.strip %}
       <tr class="success">
       {% else %}
       <tr class="info">
@@ -347,47 +315,4 @@
       <tr>
         <th>Modified By</th>
         <td>{{ object.modified_by }}</td>
-      </tr>
-      {% if asset.is_past_due == 'audit_good' %}
-        <tr class="success">
-      {% elif asset.is_past_due == 'audited_old' %}
-        <tr class="warning">
-      {% elif asset.is_past_due == 'need_audit' %}
-        <tr class="danger">
-      {% elif asset.is_past_due == 'missing_info' %}
-        <tr class="info">
-      {% elif asset.is_past_due == 'no_audit_performed' %}
-        <tr>
-      {% endif %}
-          <th>Date Audited</th>
-          <td>{{ object.audited_date }}</td>
-        </tr>
-        {% if asset.is_past_due == 'audit_good' %}
-          <tr class="success">
-        {% elif asset.is_past_due == 'audited_old' %}
-          <tr class="warning">
-        {% elif asset.is_past_due == 'need_audit' %}
-          <tr class="danger">
-        {% elif asset.is_past_due == 'missing_info' %}
-          <tr class="info">
-        {% elif asset.is_past_due == 'no_audit_performed' %}
-          <tr>
-        {% endif %}
-          <th>Audited By</th>
-          <td>{{ object.audited_by }}</td>
-        </tr>
-    </tbody>
-  </table>
-</div>
-</p>
-<p>
-  <div class="btn-group">
-    <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "edit" %} Edit</a>
-    <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
-    <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-    <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
-    <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-    <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
-  </div>
-</p>
-{% endblock content %}
+       </tr>

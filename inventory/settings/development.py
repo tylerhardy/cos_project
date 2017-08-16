@@ -10,6 +10,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '137.190.116.87']
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+print("My base dir:" + BASE_DIR)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 import datetime
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 # Hardware role
@@ -125,6 +126,21 @@ os_arch_choice = (
     ('none','No OS installed')
 )
 
+# Eligibilty Choices
+eligible_upgrade_choice = (
+    (0, 'None'),
+    (1, '1 years'),
+    (2, '2 years'),
+    (3, '3 years'),
+    (4, '4 years'),
+    (5, '5 years'),
+    (6, '6 years'),
+    (7, '7 years'),
+    (8, '8 years'),
+    (9, '9 years'),
+    (10, '10 years')
+)
+
 # Hardware network connection
 connection_choice = (
     ('WD', 'Wired'),
@@ -142,7 +158,6 @@ class Asset(models.Model):
     hardware_role = models.CharField(max_length=200, blank=True, choices=hardware_role_choice)
     hardware_condition = models.CharField("Condition", max_length=200, blank=True, choices=condition_choices)
     inventory_system = models.CharField("Inventory system", max_length=200, blank=True, choices=inventory_system_choices)
-    inventory_system_current = models.BooleanField("Inventory system Up-To-Date", default=False)
     user = models.CharField("Primary user", max_length=200, blank=True)
     curator = models.CharField("Curator", max_length=200, blank=True)
     department = models.CharField("Department", max_length=200, blank=True, choices=department_choice)
@@ -150,11 +165,14 @@ class Asset(models.Model):
     location = models.CharField("Location", max_length=200, blank=True)
     vendor = models.CharField("Vendor",max_length=200, blank=True)
     vendor_serial_number = models.CharField("Vendor serial number", max_length=200, unique=True, blank=True, null=True)
+    requisition_number = models.CharField("Requisition number", max_length=200, blank=True)
     purchase_order = models.CharField("PO", max_length=200, blank=True)
     purchase_date = models.DateTimeField("Date of purchase", blank=True, null=True)
     purchase_cost = models.CharField("Cost", max_length=200, blank=True)
+    eligible_upgrade = models.IntegerField("Upgrade eligibility", default=0, choices=eligible_upgrade_choice, blank=True, null=True)
+    eligible_upgrade_date = models.DateTimeField("Upgrade eligibility date", blank=True, null=True)
     funded_by = models.CharField("Hardware source of funds", max_length=200, blank=True)
-    hardware_type = models.CharField(max_length=200, choices=hardware_type_choice)
+    hardware_type = models.CharField(max_length=200, choices=hardware_type_choice, blank=True)
     hardware_make = models.CharField(max_length=200, blank=True)
     hardware_model = models.CharField(max_length=200, blank=True)
     hardware_serial_number = models.CharField(max_length=200, unique=True, blank=True, null=True)
@@ -196,10 +214,46 @@ class Asset(models.Model):
         return self.asset_tag
 
     def save(self, *args, **kwargs):
-        # Create Object
-        if self.pk is None:
-            self.added_date = datetime.datetime.now()
-        # Modify Object
+        if self.purchase_date:
+            if self.eligible_upgrade:
+                self.eligible_upgrade_date = self.purchase_date + datetime.timedelta(days=((365 * self.eligible_upgrade)+1))
+            else:
+                self.eligible_upgrade_date = None
         else:
-            self.modified_date = datetime.datetime.now()
+            self.eligible_upgrade_date = None
         super(Asset, self).save(*args, **kwargs)
+
+    @property
+    def is_eligible_upgrade(self):
+        d_now = timezone.make_aware(datetime.datetime.today())
+        d_1yr = timezone.make_aware(datetime.datetime.today()) + datetime.timedelta(days=365)
+        d_4yr = timezone.make_aware(datetime.datetime.today()) + datetime.timedelta(days=1460)
+        d_5yr = timezone.make_aware(datetime.datetime.today()) + datetime.timedelta(days=1825)
+        if self.eligible_upgrade_date >= d_1yr:
+            return 'not_eligible'
+        elif (self.eligible_upgrade_date < d_1yr) and (self.eligible_upgrade_date > d_now):
+            return 'almost_eligible'
+        elif self.eligible_upgrade_date < d_now:
+            return 'is_eligible'
+        else:
+            return 'error'
+
+    @property
+    def is_past_due(self):
+        d_180 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=180)
+        d_365 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=365)
+        if self.audited_date is None:
+            # return print("no_audit_performed")
+            return 'no_audit_performed'
+        if self.audited_date > d_180:
+            # return print("audit_good")
+            return 'audit_good'
+        elif (self.audited_date < d_180) and (self.audited_date > d_365):
+            # return print("audit_old")
+            return 'audit_old'
+        elif self.audited_date < d_365:
+            # return print("need_audit")
+            return 'need_audit'
+        else:
+            # return print("missing_info")
+            return 'missing_info'

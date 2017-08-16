@@ -4,11 +4,13 @@
 {% block content %}
 <p>
   {% if hide %}
-    <h2><strong>Create Asset</strong></h2>
+    <h1><strong>Create Asset</strong></h1>
   {% elif modify %}
-    <h2><strong>Modify Asset</strong></h2>
+    <h1><strong>Modify Asset</strong></h1>
+  {% elif audit %}
+    <h1><strong>Audit Asset</strong></h1>
   {% else %}
-    <h2><strong>Copy Asset</strong></h2>
+    <h1><strong>Copy Asset</strong></h1>
   {% endif %}
 </p>
 <form action="" method="POST" class="form">
@@ -20,6 +22,11 @@
       <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
     {% elif modify %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Modify</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+    {% elif audit %}
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Audit</button>
       <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
       <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
       <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
@@ -41,6 +48,11 @@
         <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
       {% elif modify %}
         <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Modify</button>
+        <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+        <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+        <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+      {% elif audit %}
+        <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Audit</button>
         <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
         <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
         <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>

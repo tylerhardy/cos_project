@@ -10,9 +10,9 @@ class AssetForm(forms.ModelForm):
         fields = [
             'asset_tag', 'hardware_name', 'hardware_serial_number',
             'vendor_serial_number', 'hardware_role', 'hardware_condition',
-            'inventory_system', 'inventory_system_current', 'user', 'curator',
-            'department', 'org_code', 'location', 'vendor', 'purchase_order',
-            'purchase_date', 'purchase_cost', 'funded_by', 'hardware_type',
+            'inventory_system', 'user', 'curator',
+            'department', 'org_code', 'location', 'vendor', 'requisition_number', 'purchase_order',
+            'purchase_date', 'purchase_cost', 'funded_by','eligible_upgrade', 'hardware_type',
             'hardware_make', 'hardware_model', 'network_connection',
             'ip_address', 'mac_wired', 'mac_wireless', 'processor',
             'harddrive', 'ram', 'graphics', 'os', 'os_arch',
