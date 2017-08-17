@@ -1,0 +1,92 @@
+{% extends "main_app/base.html" %}
+
+{% load bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block content %}
+<p>
+  <h1><strong>Assets</strong></h1>
+</p>
+<p>
+  <div class="btn-group">
+    <a href="{% url 'asset_create' %}" class='btn btn-primary' role="button">{% bootstrap_icon "new" %} New Asset</a>
+    <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export</a>
+    <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "cloud-upload" %} Import</a>
+  </div>
+</p>
+<form method="get">
+  <div class="well">
+    <h4 style="margin-top: 0">Filter</h4>
+    <div class="row">
+      <div class="form-group col-sm-4 col-md-3">
+        {{ filter.form.asset_tag.label_tag }}
+        {% render_field filter.form.asset_tag class="form-control" %}
+      </div>
+      <div class="form-group col-sm-4 col-md-3">
+        {{ filter.form.hardware_name.label_tag }}
+        {% render_field filter.form.hardware_name class="form-control" %}
+      </div>
+      <div class="form-group col-sm-4 col-md-3">
+        {{ filter.form.user.label_tag }}
+        {% render_field filter.form.user class="form-control" %}
+      </div>
+      <div class="form-group col-sm-4 col-md-3">
+        {{ filter.form.location.label_tag }}
+        {% render_field filter.form.location class="form-control" %}
+      </div>
+    </div>
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary">{% bootstrap_icon "search" %} Search</button>
+      <a href="{% url 'assets' %}" class='btn btn-default' role="button">{% bootstrap_icon "refresh" %} Clear</a>
+    </div>
+    <div>
+    </div>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>Asset Tag</th>
+        <th>Hardware Type</th>
+        <th>Hardware Name</th>
+        <th>User</th>
+        <th>Location</th>
+        <th>Last Audit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in items %}
+        {% if asset.is_past_due == 'audit_good' %}
+          <tr class="success">
+        {% elif asset.is_past_due == 'audited_old' %}
+          <tr class="warning">
+        {% elif asset.is_past_due == 'need_audit' %}
+          <tr class="danger">
+        {% elif asset.is_past_due == 'missing_info' %}
+          <tr class="info">
+        {% elif asset.is_past_due == 'no_audit_performed' %}
+          <tr>
+        {% endif %}
+          <th><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></th>
+          <td>{{ asset.hardware_type }}</td>
+          <td>{{ asset.hardware_name }}</td>
+          <td>{{ asset.user }}</td>
+          <td>{{ asset.location }}</td>
+          {% if asset.is_past_due %}
+          <td>{{ asset.audited_date|date:"d M Y" }}</td>
+          {% else %}
+          <td>In the Past</td>
+          {% endif %}
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+  {% bootstrap_pagination items extra=request.GET.urlencode %}
+  {% endblock %}

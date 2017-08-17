@@ -1,0 +1,17 @@
+{% extends "main_app/base.html" %}
+
+{% block header %}
+  <div class="jumbotron">
+    <h1><strong>COS</strong> | Home</h1>
+  </div>
+{% endblock header %}
+
+{% block content %}
+  {% if not user.is_authenticated %}
+    <p>Welcome, this is a very basic Inventory Management System developed by Tyler Hardy.</p>
+    <p>Please login to continue</p>
+  {% else %}
+    <p>Welcome {{ user.get_username }}</p>
+    <p>The inventory system has the following record counts:</p>
+  {% endif %}
+{% endblock content %}

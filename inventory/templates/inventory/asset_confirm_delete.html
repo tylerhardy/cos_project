@@ -1,0 +1,21 @@
+{% extends "main_app/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+<p><h2><strong>Delete Asset</strong></h2></p>
+<p>
+  <div class="btn-group">
+    <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+    <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  </div>
+</p>
+<p>Are you sure you want to delete the asset: <strong>{{ asset }}?</strong></p>
+<form action="" method="POST" class="form">
+  {% csrf_token %}
+  {% buttons %}
+    <button class='btn btn-danger' type="submit">{% bootstrap_icon "remove" %} Confirm deletion</button>
+  {% endbuttons %}
+</form>
+{% endblock %}

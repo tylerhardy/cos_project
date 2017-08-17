@@ -1,0 +1,56 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-windows-10
+
+[Step 1 - Configuring PowerShell]
+cd ~
+Set-ExecutionPolicy -Scope CurrentUser
+RemoteSigned
+Get-ExecutionPolicy -List
+
+[Step 2 - Installing the Package Manager Chocolatey]
+$script = New-Object Net.WebClient
+$script | Get-Member
+$script.DownloadString("https://chocolatey.org/install.ps1")
+Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+
+choco upgrade chocolatey
+
+[Optional - install nano]
+choco install -y nano
+
+[Step 3 - Installing Python 3]
+choco install -y python3
+`reboot powershell`
+refreshenv
+python -V
+python -m pip install --upgrade pip
+
+[Step 4 - Setting Up a Virtual Environment]
+pip install virtualenv
+pip install virtualenvwrapper-win
+
+~
+mkdir cos_project
+cd cos_project
+mkvirtaulenv cos_dev
+ve cos_dev
+pip install django
+django-admin.py startproject cos_website .
+manage.py startapp blog
+manage.py startapp inventory
+manage.py startapp directory
+manage.py startapp wiki
+manage.py startapp todo
+
+[Step 5 - setup postgres database]
+psql -U postgres -h localhost
+CREATE DATABASE cos_dev_db;
+CREATE USER tylerhardy WITH PASSWORD 'Letmein11';
+ALTER ROLE tylerhardy SET client_encoding to 'utf8';
+ALTER ROLE tylerhardy SET default_transaction_isolation TO 'read committed';
+ALTER ROLE tylerhardy SET timezone TO 'America/Denver';
+GRANT ALL PRIVILEGES ON DATABASE cos_dev_db TO tylerhardy;
+\q
+
+set "DJANGO_SETTINGS_MODULE=cos_website.settings.development"
+set "DJANGO_SETTINGS_MODULE=main_app.settings.dev"
+
