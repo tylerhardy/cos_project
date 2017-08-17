@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CosConfig(AppConfig):
-    name = 'cos'
+    name = 'cos_inventory'

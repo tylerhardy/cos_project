@@ -94,7 +94,7 @@ cat ~/.ssh/id_rsa.pub
 git config --global user.name "Tyler Hardy"
 git config --global user.email "tylerhardy@gmail.com"
 ws
-git clone git@github.com:tylerhardy/inventory_project.git
+git clone git@github.com:tylerhardy/cos_project.git
 
 [Setup POSTGRESS PSQL]
 sudo -u postgres psql
@@ -134,7 +134,7 @@ sudo ufw allow 8000
 python manage.py runserver 0.0.0.0:8000
 
 [Testing Gunicorn]
-cd ~/Developer/inventory_project
+cd ~/Developer/cos_project
 gunicorn --bind 0.0.0.0:8000 inventory.wsgi
 `test webiste in browser`
 deactivate
@@ -151,8 +151,8 @@ After=network.target
 [Service]
 User=pi
 Group=www-data
-WorkingDirectory=/home/pi/Developer/inventory_project
-ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/inventory_project/inventory.sock inventory.wsgi:application
+WorkingDirectory=/home/pi/Developer/cos_project
+ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/cos_project/inventory.sock inventory.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -164,7 +164,7 @@ sudo systemctl enable gunicorn
 [Check for the Gunicorn Socket File]
 sudo systemctl status gunicorn
 `verify that inventory.sock is listed`
-ls /home/pi/Developer/inventory_project
+ls /home/pi/Developer/cos_project
 `if issue use troubleshooting log`
 sudo journalctl -u gunicorn
 `if changes made restart daemon`
@@ -172,7 +172,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
 
 [sudo systemctl restart gunicorn]
-sudo nano /etc/nginx/sites-available/inventory_project
+sudo nano /etc/nginx/sites-available/cos_project
 
 """
 server {
@@ -181,12 +181,12 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/pi/Developer/inventory_project/inventory;
+        root /home/pi/Developer/cos_project/inventory;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/pi/Developer/inventory_project/inventory.sock;
+        proxy_pass http://unix:/home/pi/Developer/cos_project/inventory.sock;
     }
 }
 
@@ -196,12 +196,12 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/pi/Developer/inventory_project/inventory;
+        root /home/pi/Developer/cos_project/inventory;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/pi/Developer/inventory_project/inventory.sock;
+        proxy_pass http://unix:/home/pi/Developer/cos_project/inventory.sock;
     }
 }
 """
@@ -209,7 +209,7 @@ server {
 sudo nano /etc/nginx/nginx.conf
 `uncomment conf where 'server_names_hash_bucket_size 64;'`
 
-sudo ln -s /etc/nginx/sites-available/inventory_project /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/cos_project /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 

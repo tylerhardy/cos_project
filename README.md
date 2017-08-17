@@ -1,4 +1,4 @@
-# Inventory Project
+# COS Project
 
 ## Pages
 - Home screen

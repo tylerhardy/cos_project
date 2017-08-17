@@ -1,35 +1,41 @@
-from django.conf.urls import url
+"""cos URL Configuration
 
-from . import views
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/1.11/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.conf.urls import url, include
+    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+"""
+from django.conf.urls import url, include
+from django.contrib import admin
 
 urlpatterns = [
-    # Class TemplateView with modified [get_context_data] function
-    url(r'^$', views.HomeView.as_view(), name='index'),
+    url(r'^inv/', include('cos_inventory.urls')),
+    url(r'^admin/', admin.site.urls),
+]
 
-    # Class TemplateView
-    url(r'^about/$', views.AboutView.as_view(), name='about'),
+# Use static() to add url mapping to serve static files during development (only)
+from django.conf import settings
+from django.conf.urls.static import static 
 
-    # Class FilterView with modified [get_context_data] function
-    url(r'^assets/$', views.AssetListView.as_view(), name='assets'),
+urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-    # Class DetailView
-    url(r'^asset/(?P<pk>\d+)$', views.AssetDetailView.as_view(), name='asset-detail'),
 
-    # Class CreateView with modified [get_context_data] and [form_valid] functions
-    url(r'^asset/create/$', views.AssetCreate.as_view(), name='asset_create'),
+#Add URL maps to redirect the base URL to our application
+from django.views.generic import RedirectView
+urlpatterns += [
+    url(r'^$', RedirectView.as_view(url='/inv/', permanent=True)),
+]
 
-    # Class UpdateView with modified [form_valid] function
-    url(r'^asset/(?P<pk>\d+)/edit/$', views.AssetUpdate.as_view(), name='asset_update'),
 
-    # Class UpdateView with modified [form_valid] function
-    url(r'^asset/(?P<pk>\d+)/audit/$', views.AssetAudit.as_view(), name='asset_audit'),
-
-    # Class UpdateView with modified [get_context_data] and [post] functions
-    url(r'^asset/(?P<pk>\d+)/duplicate/$', views.AssetDuplicate.as_view(), name='asset_duplicate'),
-
-    # Class DeleteView
-    url(r'^asset/(?P<pk>\d+)/delete/$', views.AssetDelete.as_view(), name='asset_delete'),
-
-    # Function View
-    url(r'^asset/export/csv/$', views.export_assets_csv, name='export_assets_csv'),
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    url('^accounts/', include('django.contrib.auth.urls')),
 ]
