@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% block title %}<title>COS Inventory</title>{% endblock %}
+    {% block title %}<title>COS</title>{% endblock %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
             data-toggle="collapse" data-target="#navbar" 
             aria-expanded="false" aria-controls="navbar">
           </button>
-          <a class="navbar-brand" href="{% url 'index' %}">COS Inventory</a>
+          <a class="navbar-brand" href="{% url 'index' %}">COS Home</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -30,6 +30,15 @@
           </ul>
           <ul class="nav navbar-nav">
             <li><a href="{% url 'assets' %}">Inventory</a></li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'asset_new' %}" style="color:black">{% bootstrap_icon "plus-sign" %}</a>
+            {% endif %}
+          </ul>
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'post_list' %}">Journals</a></li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'post_new' %}" style="color:black">{% bootstrap_icon "plus-sign" %}</a>
+            {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
@@ -43,7 +52,7 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="content container">
       <div class="page-header">
         {% block header %}{% endblock header %}
       </div>

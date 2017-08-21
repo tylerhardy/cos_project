@@ -205,7 +205,7 @@ class Asset(models.Model):
     history = HistoricalRecords()
 
     def get_absolute_url(self):
-        return reverse('asset-detail', args=[str(self.id)])
+        return reverse('asset_detail', args=[str(self.id)])
 
     def __str__(self):
         """

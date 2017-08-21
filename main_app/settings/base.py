@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My Apps
-    'blog.apps.BlogConfig',
+    'journal.apps.journalConfig',
     'directory.apps.DirectoryConfig',
     'inventory.apps.InventoryConfig',
     'todo.apps.TodoConfig',

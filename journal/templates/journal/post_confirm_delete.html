@@ -1,18 +1,18 @@
 {% extends "main_app/base.html" %}
 {% load bootstrap3 %}
 
-{% block title %}<title>COS Delete Asset</title>{% endblock %}
+{% block title %}<title>COS Delete Journal</title>{% endblock %}
 
 {% block header %}
 <div class="header">
-  <h1>COS Inventory | <strong>Delete Asset</strong></h1>
+  <h1>COS Journals | <strong>Delete Journal</strong></h1>
 </div>
 {% endblock header %}
 
 {% block content %}
 <div class="btn-group">
   <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-  <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
 </div>
 
 <div class="spacing">
@@ -20,7 +20,7 @@
 </div>
 
 <div class="forms">
-  <p>Are you sure you want to delete the asset: <strong>{{ asset }}?</strong></p>
+  <p>Are you sure you want to delete the journal: <strong>{{ object }}?</strong></p>
   <form action="" method="POST" class="form">
     {% csrf_token %}
     {% buttons %}

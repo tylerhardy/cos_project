@@ -1,0 +1,47 @@
+{% extends "main_app/base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}<title>COS Journal Form</title>{% endblock %}
+
+{% block header %}
+<div class="header">
+{% if new %}
+  <h1>COS Journals | <strong>New Journal</strong></h1>
+{% elif edit %}
+  <h1>COS Journals | <strong>Edit Journal</strong></h1>
+{% endif %}
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="forms">
+  <form action="" method="POST" class="form">
+    <div class="btn-group">
+    {% if new %}
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Add</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
+    {% elif edit %}
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Edit</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
+    {% endif %}
+    </div>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="btn-group">
+    {% if new %}
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Add</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
+    {% elif edit %}
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Edit</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="{{ object.get_absolute_url }}" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
+    {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

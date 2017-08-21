@@ -3,40 +3,17 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
+from django_filters.views import FilterView
 
+from .filters import AssetListFilter
 from .models import Asset
 from .forms import AssetForm
 
 from datetime import datetime
 
 # Create your views here.
-# class HomeView(generic.TemplateView):
-#     """
-#     Homepage for the inventory system, shows how many assets are in the system
-#     """
-#     template_name = 'index.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         context = super(HomeView, self).get_context_data(**kwargs)
-#         context['assets'] = Asset.objects.all()
-#         return context
-
-
-# class AboutView(generic.TemplateView):
-#     """
-#     About page for the inventory systm, provides basic information on using
-#     the inventory system
-#     """
-#     template_name = 'about.html'
-
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-
-from django_filters.views import FilterView
-from .filters import AssetListFilter
-
-
 class AssetListView(LoginRequiredMixin, FilterView):
     """
     FilterView inplace of generic ListView, provides search functionality
@@ -72,9 +49,8 @@ class AssetDetailView(LoginRequiredMixin, generic.DetailView):
     model = Asset
     template_name = 'inventory/asset_detail.html'
 
+
 from django.forms.models import modelform_factory
-
-
 class ModelFormWidgetMixin(object):
     def get_form_class(self):
         return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
@@ -112,13 +88,12 @@ class AssetCreate(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
     def form_valid(self, form):
         asset_create_form = form.save(commit=False)
         asset_create_form.added_by = self.request.user
-        asset_create_form = form.save()
         return super(AssetCreate, self).form_valid(form)
 
 
 class AssetUpdate(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     """
-    Generic UpdateView for modifying existing assets.
+    Generic UpdateView for Editing existing assets.
     Modified [form_valid] to log who modified the asset.
     """
     model = Asset
@@ -141,14 +116,13 @@ class AssetUpdate(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetUpdate, self).get_context_data(**kwargs)
-        context['modify'] = True
+        context['edit'] = True
         return context
 
     def form_valid(self, form):
         asset_update_form = form.save(commit=False)
         asset_update_form.modified_by = self.request.user
         asset_update_form.modified_date = datetime.now()
-        asset_update_form = form.save()
         return super(AssetUpdate, self).form_valid(form)
 
 class AssetAudit(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
@@ -174,7 +148,6 @@ class AssetAudit(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
         asset_update_form = form.save(commit=False)
         asset_update_form.audited_by = self.request.user
         asset_update_form.audited_date = datetime.now()
-        asset_update_form = form.save()
         return super(AssetAudit, self).form_valid(form)
 
 class AssetDuplicate(LoginRequiredMixin, UpdateView):

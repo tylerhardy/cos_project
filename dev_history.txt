@@ -35,7 +35,7 @@ mkvirtaulenv cos_dev
 ve cos_dev
 pip install django
 django-admin.py startproject cos_website .
-manage.py startapp blog
+manage.py startapp journal
 manage.py startapp inventory
 manage.py startapp directory
 manage.py startapp wiki
@@ -51,6 +51,7 @@ ALTER ROLE tylerhardy SET timezone TO 'America/Denver';
 GRANT ALL PRIVILEGES ON DATABASE cos_dev_db TO tylerhardy;
 \q
 
-set "DJANGO_SETTINGS_MODULE=cos_website.settings.development"
-set "DJANGO_SETTINGS_MODULE=main_app.settings.dev"
+(to drop: DROP DATABASE cos_dev_db;)
 
+[Step 6 - setup virtualenv path variable]
+set "DJANGO_SETTINGS_MODULE=main_app.settings.dev"
