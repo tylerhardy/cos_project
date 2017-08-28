@@ -1,0 +1,143 @@
+{% extends 'main_project/base.html' %}
+{% load bootstrap3 %}
+
+
+{% block title %}<title>COS Directory | Detail</title>{% endblock %}
+
+{% block header %}
+<div class="header">
+  <h1>COS Directory | <strong>Contact Detail</strong></h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="btn-group">
+  <a href="{% url 'contact_update' object.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+  <a href="{% url 'contact_delete' object.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
+  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+  <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+</div>
+
+<div class="spacing">
+  <p></p>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+      <tr>
+        <th colspan="2"><center>Contact Information | <em>{{ object.email_address }}</em></center></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if object.current_status == 'current' %}
+        <tr class="success">
+      {% elif object.current_status == 'sabbatical' %}
+        <tr class="warning">
+      {% elif object.current_status == 'adjunct' %}
+        <tr class="info">
+      {% else %}
+      <tr class="danger">
+      {% endif %}
+        <th>Status</th>
+        <td>{{ object.status }}</td>
+      </tr>
+      {% if object.first_name and object.first_name.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>First Name</th>
+        <td>{{ object.first_name }}</td>
+      </tr>
+      {% if object.last_name and object.last_name.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Last Name</th>
+        <td>{{ object.last_name }}</td>
+      </tr>
+      {% if object.email_address and object.email_address.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Email</th>
+        <td>{{ object.email_address }}</td>
+      </tr>
+      {% if object.department and object.department.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Department</th>
+        <td>{{ object.get_department_display }}</td>
+      </tr>
+      {% if object.job_title and object.job_title.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Job Title</th>
+        <td>{{ object.job_title }}</td>
+      </tr>
+      {% if object.phone_number_1 and object.phone_number_1.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Office Ext.</th>
+        <td>{{ object.phone_number_1 }}</td>
+      </tr>
+      {% if object.phone_number_2 and object.phone_number_2.strip %}
+      <tr>
+      {% else %}
+      <tr class="info">
+      {% endif %}
+        <th>Cell</th>
+        <td>{{ object.phone_number_2 }}</td>
+      </tr>
+      {% if object.location and object.location.strip %}
+      <tr>
+      {% else %}
+      <tr class="warning">
+      {% endif %}
+        <th>Office Location</th>
+        <td>{{ object.location }}</td>
+      </tr>
+      {% if object.website and object.website.strip %}
+      <tr>
+      {% else %}
+      <tr class="info">
+      {% endif %}
+        <th>Website</th>
+        <td>{{ object.website }}</td>
+      </tr>
+      {% if object.visit_past_due == 'no_visit_performed' %}
+        <tr class="info">
+      {% elif object.visit_past_due == 'visit_good' %}
+        <tr class="success">
+      {% elif object.visit_past_due == 'visit_old' %}
+        <tr class="warning">
+      {% elif object.visit_past_due == 'need_visit' %}
+        <tr class="danger">
+      {% elif object.visit_past_due == 'error' %}
+        <tr class="danger">
+      {% else %}
+        <tr>
+      {% endif %}
+          <th>last_visit</th>
+          <td>{{ object.last_visit|date:"m d Y" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="btn-group">
+  <a href="{% url 'contact_update' object.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+  <a href="{% url 'contact_delete' object.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
+  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+  <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+</div>
+{% endblock %}

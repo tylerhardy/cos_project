@@ -114,7 +114,7 @@ sudo pip3 install virtualenv
 sudo pip3 install virtualenvwrapper
 mkvirtualenv inv_prod
 nano $VIRTUAL_ENV/bin/postactivate
-export DJANGO_SETTINGS_MODULE="inventory.settings.production"
+export DJANGO_SETTINGS_MODULE="main_project.settings.production"
 
 nano $VIRTUAL_ENV/bin/predeactivate
 unset DJANGO_SETTINGS_MODULE
@@ -135,7 +135,7 @@ python manage.py runserver 0.0.0.0:8000
 
 [Testing Gunicorn]
 cd ~/Developer/cos_project
-gunicorn --bind 0.0.0.0:8000 inventory.wsgi
+gunicorn --bind 0.0.0.0:8000 main_project.wsgi
 `test webiste in browser`
 deactivate
 
@@ -152,7 +152,7 @@ After=network.target
 User=pi
 Group=www-data
 WorkingDirectory=/home/pi/Developer/cos_project
-ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/cos_project/inventory.sock inventory.wsgi:application
+ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/cos_project/main_project.sock main_project.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
@@ -163,7 +163,7 @@ sudo systemctl enable gunicorn
 
 [Check for the Gunicorn Socket File]
 sudo systemctl status gunicorn
-`verify that inventory.sock is listed`
+`verify that main_project.sock is listed`
 ls /home/pi/Developer/cos_project
 `if issue use troubleshooting log`
 sudo journalctl -u gunicorn
@@ -181,12 +181,12 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/pi/Developer/cos_project/inventory;
+        root /home/pi/Developer/cos_project/main_project;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/pi/Developer/cos_project/inventory.sock;
+        proxy_pass http://unix:/home/pi/Developer/cos_project/main_project.sock;
     }
 }
 
@@ -196,12 +196,12 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/pi/Developer/cos_project/inventory;
+        root /home/pi/Developer/cos_project/main_project;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/pi/Developer/cos_project/inventory.sock;
+        proxy_pass http://unix:/home/pi/Developer/cos_project/main_project.sock;
     }
 }
 """

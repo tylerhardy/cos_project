@@ -3,3 +3,4 @@ django-bootstrap3==9.0.0
 django-filter==1.0.4
 django-simple-history==1.9.0
 django-widget-tweaks==1.4.1
+wiki==0.3b2

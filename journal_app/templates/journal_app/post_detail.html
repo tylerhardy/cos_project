@@ -1,0 +1,34 @@
+{% extends 'main_project/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}<title>COS Journals | Details</title>{% endblock %}
+
+{% block header %}
+<div class="header">
+  <h1>COS Journals | <strong>Journal Entry</strong></h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="btn-group">
+  <a href="{% url 'post_edit' object.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+  <a href="{% url 'post_delete' object.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
+  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+  <a href="{% url 'post_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Journals</a>
+</div>
+
+<div class="spacing">
+  <p></p>
+</div>
+
+<div class="post">
+  {% if post.published_date %}
+  <div class="date">
+    {{ post.published_date }}
+  </div>
+  {% endif %}
+  <h1>{{ post.title }}</h1>
+  <small><em>{{ post.author }}</em></small>
+  <p>{{ post.text|linebreaksbr }}</p>
+</div>
+{% endblock %}

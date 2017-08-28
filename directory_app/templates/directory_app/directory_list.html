@@ -1,0 +1,116 @@
+{% extends "main_project/base.html" %}
+{% load bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block title %}<title>COS Directory | List</title>{% endblock %}
+
+{% block header %}
+<div class="header">
+  <h1>COS Directory | <strong>Contact List</strong></h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="btn-group">
+  <a href="{% url 'contact_new' %}" class='btn btn-primary' role="button">{% bootstrap_icon "new" %} New Contact</a>
+  <a href="{% url 'export_directory_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export</a>
+  <a href="" class='btn btn-default' role="button">{% bootstrap_icon "cloud-upload" %} Import</a>
+</div>
+
+<div class="spacing">
+  <p></p>
+</div>
+
+<div class="form">
+  <form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Filter</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.first_name.label_tag }}
+          {% render_field filter.form.first_name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.last_name.label_tag }}
+          {% render_field filter.form.last_name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.email_address.label_tag }}
+            {% render_field filter.form.email_address class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.phone_number_1.label_tag }}
+          {% render_field filter.form.phone_number_1 class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.department.label_tag }}
+          {% render_field filter.form.department class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.location.label_tag }}
+          {% render_field filter.form.location class="form-control" %}
+        </div>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">{% bootstrap_icon "search" %} Search</button>
+        <a href="{% url 'directory_list' %}" class='btn btn-default' role="button">{% bootstrap_icon "refresh" %} Clear</a>
+      </div>
+      <div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Department</th>
+        <th>Location</th>
+        <th>Last Visited</th>
+        <th>Quick Links</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact in items %}
+        <tr>
+          <td>{{ contact.first_name }}</td>
+          <td>{{ contact.last_name }}</td>
+          <th><a href="{{ contact.get_absolute_url }}">{{ contact.email_address }}</a></th>
+          <td>{{ contact.phone_number_1 }}</td>
+          <td>{{ contact.get_department_display }}</td>
+          <td>{{ contact.location }}</td>
+          {% if contact.visit_past_due == 'no_visit_performed' %}
+            <td class="info">{{ contact.last_visit|date:"m d Y" }}</td>
+          {% elif contact.visit_past_due == 'visit_good' %}
+            <td class="success">{{ contact.last_visit|date:"m d Y" }}</td>
+          {% elif contact.visit_past_due == 'visit_old' %}
+            <td class="warning">{{ contact.last_visit|date:"m d Y" }}</td>
+          {% elif contact.visit_past_due == 'need_visit' %}
+            <td class="danger">{{ contact.last_visit|date:"m d Y" }}</td>
+          {% elif contact.visit_past_due == 'error' %}
+            <td class="danger">Error</td>
+          {% else %}
+            <td>{{contact.last_visit|date:"m d Y"}}</td>
+          {% endif %}
+          <td>
+            <a href="{% url 'contact_update' contact.id %}">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'contact_duplicate' contact.id %}">{% bootstrap_icon "copy" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'contact_delete' contact.id %}">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'date_update' contact.id %}"> {% bootstrap_icon "ok" %}</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% bootstrap_pagination items extra=request.GET.urlencode %}
+{% endblock %}
