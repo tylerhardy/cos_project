@@ -98,12 +98,12 @@ git clone git@github.com:tylerhardy/cos_project.git
 
 [Setup POSTGRESS PSQL]
 sudo -u postgres psql
-CREATE DATABASE cos_inv_db;
+CREATE DATABASE cos_project_prod_db;
 CREATE USER tylerhardy WITH PASSWORD 'Letmein11';
 ALTER ROLE tylerhardy SET client_encoding to 'utf8';
 ALTER ROLE tylerhardy SET default_transaction_isolation TO 'read committed';
 ALTER ROLE tylerhardy SET timezone TO 'America/Denver';
-GRANT ALL PRIVILEGES ON DATABASE cos_inv_db TO tylerhardy;
+GRANT ALL PRIVILEGES ON DATABASE cos_project_prod_db TO tylerhardy;
 \q
 
 [Setting up Virtual Environment]
@@ -112,7 +112,7 @@ pip3 -V
 sudo pip3 install --upgrade pip
 sudo pip3 install virtualenv
 sudo pip3 install virtualenvwrapper
-mkvirtualenv inv_prod
+mkvirtualenv cos_prod
 nano $VIRTUAL_ENV/bin/postactivate
 export DJANGO_SETTINGS_MODULE="main_project.settings.production"
 
@@ -122,6 +122,13 @@ unset DJANGO_SETTINGS_MODULE
 
 [Setup Django Requirments]
 pip install -r requirements/production.txt
+
+[Issues]
+sudo apt-get install python3-dev python3-setuptools
+sudo apt-get install libtiff5-dev
+sudo apt-get install libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+
+
 `modify settings`
 python manage.py makemigrations
 python manage.py migrate
@@ -241,3 +248,13 @@ python manage.py migrate --fake cos 0002
 python manage.py migrate showmigrations
 python manage.py migrate migrate
 python manage.py migrate showmigrations
+
+
+[Upgrade project]
+sudo systemctl stop nginx
+sudo systemctl stop gunicorn
+sudo systemctl daemon-reload
+ws
+mv cos_project/ cos_project_bak/
+git clone git@github.com:tylerhardy/cos_project.git
+
