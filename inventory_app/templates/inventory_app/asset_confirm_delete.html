@@ -20,7 +20,7 @@
 </div>
 
 <div class="forms">
-  <p>Are you sure you want to delete the asset: <strong>{{ asset }}?</strong></p>
+  <p>Are you sure you want to delete the asset: <strong><em>{{ asset }}?</em></strong></p>
   <form action="" method="POST" class="form">
     {% csrf_token %}
     {% buttons %}

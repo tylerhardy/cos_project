@@ -82,7 +82,7 @@ class AssetCreate(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetCreate, self).get_context_data(**kwargs)
-        context['hide'] = True
+        context['new'] = True
         return context
 
     def form_valid(self, form):

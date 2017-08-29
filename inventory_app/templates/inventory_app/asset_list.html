@@ -14,7 +14,6 @@
 <div class="btn-group">
   <a href="{% url 'asset_new' %}" class='btn btn-primary' role="button">{% bootstrap_icon "new" %} New Asset</a>
   <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export</a>
-  <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "cloud-upload" %} Import</a>
 </div>
 
 <div class="spacing">
@@ -63,31 +62,36 @@
         <th>User</th>
         <th>Location</th>
         <th>Last Audit</th>
+        <th>Quick Links</th>
       </tr>
     </thead>
     <tbody>
       {% for asset in items %}
-        {% if asset.is_past_due == 'audit_good' %}
-          <tr class="success">
-        {% elif asset.is_past_due == 'audited_old' %}
-          <tr class="warning">
-        {% elif asset.is_past_due == 'need_audit' %}
-          <tr class="danger">
-        {% elif asset.is_past_due == 'missing_info' %}
-          <tr class="info">
-        {% elif asset.is_past_due == 'no_audit_performed' %}
-          <tr>
-        {% endif %}
+        <tr>
           <th><a href="{{ asset.get_absolute_url }}">{{ asset.asset_tag }}</a></th>
           <td>{{ asset.hardware_type }}</td>
           <td>{{ asset.hardware_name }}</td>
           <td>{{ asset.user }}</td>
           <td>{{ asset.location }}</td>
-          {% if asset.is_past_due %}
-          <td>{{ asset.audited_date|date:"d M Y" }}</td>
-          {% else %}
-          <td>In the Past</td>
-          {% endif %}
+        {% if asset.is_past_due == 'no_audit_performed' %}
+          <td class="info">{{ asset.audited_date|date:"m d Y" }}</td>
+        {% elif asset.is_past_due == 'audit_good' %}
+          <td class="success">{{ asset.audited_date|date:"m d Y" }}</td>
+        {% elif asset.is_past_due == 'audited_old' %}
+          <td class="warning">{{ asset.audited_date|date:"m d Y" }}</td>
+        {% elif asset.is_past_due == 'need_audit' %}
+          <td class="danger">{{ asset.audited_date|date:"m d Y" }}</td>
+        {% elif asset.is_past_due == 'error' %}
+          <td class="danger">Error</td>
+        {% else %}
+          <td>{{asset.audited_date|date:"m d Y"}}</td>
+        {% endif %}
+          <td>
+            <a href="{% url 'asset_update' asset.id %}" style="color:black">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'asset_duplicate' asset.id %}">{% bootstrap_icon "copy" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'asset_delete' asset.id %}" style="color:darkred">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'asset_audit' asset.id %}" style="color:darkgreen"> {% bootstrap_icon "ok" %}</a>
+          </td>
         </tr>
       {% empty %}
         <tr>

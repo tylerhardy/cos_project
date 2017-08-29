@@ -79,7 +79,7 @@ class Directory(models.Model):
         """
         Return a string representation of the model.
         """
-        return self.email_address
+        return self.first_name + " " + self.last_name
 
     @property
     def visit_past_due(self):

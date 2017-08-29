@@ -11,12 +11,12 @@
 
 {% block content %}
 <div class="btn-group">
-    <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
-    <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
-    <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-    <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
-    <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-    <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+  <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+  <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
+  <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
+  <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
 </div>
 
 <div class="spacing">
@@ -389,11 +389,11 @@
   </table>
 </div>
 <div class="btn-group">
-  <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
-  <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
-  <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-  <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
   <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
   <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+  <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+  <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
+  <a href="{% url 'asset_audit' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
+  <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
 </div>
 {% endblock content %}

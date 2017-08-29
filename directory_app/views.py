@@ -20,7 +20,7 @@ class DirectoryListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryListView, self).get_context_data(**kwargs)
-        list_contacts =  Directory.objects.order_by('department','pk').filter(status__icontains='current')
+        list_contacts =  Directory.objects.order_by('department','last_name').filter(status__icontains='current')
         contact_filter = DirectoryListFilter(self.request.GET, queryset=list_contacts)
         paginator = Paginator(contact_filter.qs, 10)
         page = self.request.GET.get('page')
@@ -84,8 +84,8 @@ class DirectoryCreateView(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        asset_create_form = form.save(commit=False)
-        asset_create_form.added_by = self.request.user
+        directory_create_form = form.save(commit=False)
+        directory_create_form.added_by = self.request.user
         return super(DirectoryCreateView, self).form_valid(form)
 
 class DirectoryUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
@@ -101,6 +101,7 @@ class DirectoryUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     widgets = {
         'last_visit': forms.DateInput(attrs={'type': 'date'}),
     }
+
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryUpdateView, self).get_context_data(**kwargs)
         context['edit'] = True

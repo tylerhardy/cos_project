@@ -238,22 +238,37 @@ class Asset(models.Model):
         else:
             return 'error'
 
+    # @property
+    # def is_past_due(self):
+    #     d_180 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=180)
+    #     d_365 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=365)
+    #     if self.audited_date is None:
+    #         # return print("no_audit_performed")
+    #         return 'no_audit_performed'
+    #     if self.audited_date > d_180:
+    #         # return print("audit_good")
+    #         return 'audit_good'
+    #     elif (self.audited_date < d_180) and (self.audited_date > d_365):
+    #         # return print("audit_old")
+    #         return 'audit_old'
+    #     elif self.audited_date < d_365:
+    #         # return print("need_audit")
+    #         return 'need_audit'
+    #     else:
+    #         # return print("missing_info")
+    #         return 'missing_info'
+
     @property
     def is_past_due(self):
         d_180 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=180)
         d_365 = timezone.make_aware(datetime.datetime.today()) - datetime.timedelta(days=365)
         if self.audited_date is None:
-            # return print("no_audit_performed")
             return 'no_audit_performed'
-        if self.audited_date > d_180:
-            # return print("audit_good")
+        elif self.audited_date > d_180:
             return 'audit_good'
         elif (self.audited_date < d_180) and (self.audited_date > d_365):
-            # return print("audit_old")
             return 'audit_old'
         elif self.audited_date < d_365:
-            # return print("need_audit")
             return 'need_audit'
         else:
-            # return print("missing_info")
-            return 'missing_info'
+            return 'error'

@@ -19,51 +19,29 @@
 <div class="forms">
   <form action="" method="POST" class="form">
     <div class="btn-group">
+      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
     {% if new %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Add</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% elif duplicate %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Copy</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
-    {% elif date %}
-      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Update Date</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% else %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Edit</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% endif %}
     </div>
     {% csrf_token %}
     {% bootstrap_form form %}
     <div class="btn-group">
+      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
     {% if new %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Add</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% elif duplicate %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Copy</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
-    {% elif date %}
-      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Update Date</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% else %}
       <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Edit</button>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
     {% endif %}
     </div>
   </form>

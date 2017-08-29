@@ -14,7 +14,6 @@
 <div class="btn-group">
   <a href="{% url 'contact_new' %}" class='btn btn-primary' role="button">{% bootstrap_icon "new" %} New Contact</a>
   <a href="{% url 'export_directory_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export</a>
-  <a href="" class='btn btn-default' role="button">{% bootstrap_icon "cloud-upload" %} Import</a>
 </div>
 
 <div class="spacing">
@@ -65,8 +64,7 @@
   <table class="table table-hover table-bordered">
     <thead>
       <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Name</th>
         <th>Email</th>
         <th>Phone Number</th>
         <th>Department</th>
@@ -78,30 +76,29 @@
     <tbody>
       {% for contact in items %}
         <tr>
-          <td>{{ contact.first_name }}</td>
-          <td>{{ contact.last_name }}</td>
-          <th><a href="{{ contact.get_absolute_url }}">{{ contact.email_address }}</a></th>
+          <th><a href="{{ contact.get_absolute_url }}">{{ contact }}</a></th>
+          <td>{{ contact.email_address }}</td>
           <td>{{ contact.phone_number_1 }}</td>
           <td>{{ contact.get_department_display }}</td>
           <td>{{ contact.location }}</td>
-          {% if contact.visit_past_due == 'no_visit_performed' %}
-            <td class="info">{{ contact.last_visit|date:"m d Y" }}</td>
-          {% elif contact.visit_past_due == 'visit_good' %}
-            <td class="success">{{ contact.last_visit|date:"m d Y" }}</td>
-          {% elif contact.visit_past_due == 'visit_old' %}
-            <td class="warning">{{ contact.last_visit|date:"m d Y" }}</td>
-          {% elif contact.visit_past_due == 'need_visit' %}
-            <td class="danger">{{ contact.last_visit|date:"m d Y" }}</td>
-          {% elif contact.visit_past_due == 'error' %}
-            <td class="danger">Error</td>
-          {% else %}
-            <td>{{contact.last_visit|date:"m d Y"}}</td>
-          {% endif %}
+        {% if contact.visit_past_due == 'no_visit_performed' %}
+          <td class="info">{{ contact.last_visit|date:"m d Y" }}</td>
+        {% elif contact.visit_past_due == 'visit_good' %}
+          <td class="success">{{ contact.last_visit|date:"m d Y" }}</td>
+        {% elif contact.visit_past_due == 'visit_old' %}
+          <td class="warning">{{ contact.last_visit|date:"m d Y" }}</td>
+        {% elif contact.visit_past_due == 'need_visit' %}
+          <td class="danger">{{ contact.last_visit|date:"m d Y" }}</td>
+        {% elif contact.visit_past_due == 'error' %}
+          <td class="danger">Error</td>
+        {% else %}
+          <td>{{contact.last_visit|date:"m d Y"}}</td>
+        {% endif %}
           <td>
-            <a href="{% url 'contact_update' contact.id %}">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'contact_update' contact.id %}" style="color:black">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
             <a href="{% url 'contact_duplicate' contact.id %}">{% bootstrap_icon "copy" %}</a>&nbsp;&nbsp;
-            <a href="{% url 'contact_delete' contact.id %}">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
-            <a href="{% url 'date_update' contact.id %}"> {% bootstrap_icon "ok" %}</a>
+            <a href="{% url 'contact_delete' contact.id %}" style="color:darkred">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
+            <a href="{% url 'date_update' contact.id %}" style="color:darkgreen"> {% bootstrap_icon "ok" %}</a>
           </td>
         </tr>
       {% empty %}
