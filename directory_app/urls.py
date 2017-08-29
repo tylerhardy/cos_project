@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^contact/(?P<pk>\d+)/duplicate/$', views.DirectoryDuplicateView.as_view(), name='contact_duplicate'),
     url(r'^contact/(?P<pk>\d+)/delete/$', views.DirectoryDeleteView.as_view(), name='contact_delete'),
     url(r'^contact/export/csv/$', views.export_directory_csv, name='export_directory_csv'),
+    # url(r'^contact/uploads/form/$', views.model_form_upload, name='model_form_upload'),
 
 ]

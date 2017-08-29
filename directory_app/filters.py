@@ -1,4 +1,5 @@
 import django_filters
+from django.db import models
 from .models import Directory
 
 class DirectoryListFilter(django_filters.FilterSet):

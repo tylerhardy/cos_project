@@ -1,4 +1,5 @@
 from django import forms
+# from .models import Directory, Picture
 from .models import Directory
 
 class DirectoryForm(forms.ModelForm):
@@ -15,3 +16,8 @@ class DirectoryForm(forms.ModelForm):
         widgets = {
             'last_visit': forms.DateInput(attrs={'type': 'date'}),
         }
+
+# class PictureForm(forms.ModelForm):
+#     class Meta:
+#         model = Picture
+#         fields = ('description', 'image', )

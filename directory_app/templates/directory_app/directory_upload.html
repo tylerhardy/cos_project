@@ -1,0 +1,42 @@
+{% extends "main_project/base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}<title>COS Directory | Contact Upload</title>{% endblock %}
+
+{% block header %}
+<div class="header">
+  <h1>COS Directory | <strong>Upload</strong></h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="forms">
+  <form action="" method="POST" class="form" enctype="multipart/form-data">
+    <div class="btn-group">
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Upload</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+    </div>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="btn-group">
+      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Upload</button>
+      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
+      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+    </div>
+  </form>
+</div>
+
+<p>Uploaded files:</p>
+<ul>
+  {% for obj in documents %}
+    <li>
+      <a href="../../../../main_project/media/{{ obj.image }}">{{ obj.description }} | {{ obj.image }}</a>
+      <small>(Uploaded at: {{ obj.uploaded_at }})</small>
+      <img src="/{{obj.image}}"/>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

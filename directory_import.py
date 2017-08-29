@@ -5,7 +5,7 @@ BASE_DIR = os.path.join(BASE_DIR, 'cos_project')
 print(BASE_DIR)
 project_dir = os.path.join(BASE_DIR, "main_project")
 print(project_dir)
-csv_location = os.path.join(BASE_DIR, "gCOS_faculty.csv")
+csv_location = os.path.join(BASE_DIR, "cos_directory.csv")
 print(csv_location)
 
 
@@ -35,4 +35,5 @@ for row in data:
         contacts.website = row[8]
         contacts.notes = row[9]
         contacts.status = row[10]
+        contacts.last_visit = row[11]
         contacts.save()

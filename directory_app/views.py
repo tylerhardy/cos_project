@@ -8,7 +8,9 @@ from django_filters.views import FilterView
 
 from .filters import DirectoryListFilter
 from .models import Directory
+# from .models import Directory, Picture
 from .forms import DirectoryForm
+# from .forms import DirectoryForm, PictureForm
 from datetime import datetime
 
 # Create your views here.
@@ -170,3 +172,17 @@ def export_directory_csv(request):
         writer.writerow(contact)
 
     return response
+
+# def model_form_upload(request):
+#     if request.method == 'POST':
+#         form = PictureForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('directory_list')
+#     else:
+#         form = PictureForm()
+#     documents = Picture.objects.all()
+#     return render(request, 'directory_app/directory_upload.html', {
+#         'form': form,
+#         'documents': documents,
+#     })

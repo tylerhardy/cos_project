@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -5,7 +7,19 @@ from django.core.validators import RegexValidator
 import datetime
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
+import os
 
+# def get_upload_path(instance, filename):
+#     return os.path.join('faculty_pictures', filename)
+
+# class Picture(models.Model):
+#     description = models.CharField(max_length=255, blank=True)
+#     image = models.FileField(upload_to=get_upload_path, blank=True, null=True)
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#     history = HistoricalRecords()
+
+#     def __str__(self):
+#         return self.description
 
 # College of Science Departments
 department_choice = (
@@ -36,7 +50,6 @@ status_choice = (
 
 # Create your models here.
 class Directory(models.Model):
-    status = models.CharField(max_length=200, choices=status_choice)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     email_address = models.EmailField(max_length=200)
@@ -50,11 +63,13 @@ class Directory(models.Model):
     website = models.URLField(max_length=200, blank=True, null=True)
     picture = models.CharField(max_length=200, blank=True, null=True)
     notes = models.TextField(blank=True)
+    status = models.CharField(default='current', max_length=200, choices=status_choice)
     last_visit = models.DateTimeField(blank=True, null=True)
     added_date = models.DateField(auto_now_add=True)
     added_by = models.ForeignKey(User, related_name='directory_added_user', blank=True, null=True)
     modified_date = models.DateField(blank=True, null=True)
     modified_by = models.ForeignKey(User, related_name='directory_modified_user', blank=True, null=True)
+    # image = models.ForeignKey(Picture, blank=True, null=True)
     history = HistoricalRecords()
 
     def get_absolute_url(self):
