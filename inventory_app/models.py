@@ -213,15 +213,15 @@ class Asset(models.Model):
         """
         return self.asset_tag
 
-    def save(self, *args, **kwargs):
-        if self.purchase_date:
-            if self.eligible_upgrade:
-                self.eligible_upgrade_date = self.purchase_date + datetime.timedelta(days=((365 * self.eligible_upgrade)+1))
-            else:
-                self.eligible_upgrade_date = None
-        else:
-            self.eligible_upgrade_date = None
-        super(Asset, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.purchase_date:
+    #         if self.eligible_upgrade:
+    #             self.eligible_upgrade_date = self.purchase_date + datetime.timedelta(days=((365 * self.eligible_upgrade)+1))
+    #         else:
+    #             self.eligible_upgrade_date = None
+    #     else:
+    #         self.eligible_upgrade_date = None
+    #     super(Asset, self).save(*args, **kwargs)
 
     @property
     def is_eligible_upgrade(self):
