@@ -11,8 +11,8 @@ print(csv_location)
 
 sys.path.append(project_dir)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.dev'
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.prod'
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.dev'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.prod'
 
 import django
 
