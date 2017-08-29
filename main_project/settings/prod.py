@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '137.190.117.94','ty128-rpi3.users.we
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cos_dev_db',
+        'NAME': 'cos_project_prod_db',
         'USER': 'tylerhardy',
         'PASSWORD': 'Letmein11',
         'HOST': 'localhost',

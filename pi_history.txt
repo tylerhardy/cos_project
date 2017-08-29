@@ -114,10 +114,16 @@ sudo pip3 install virtualenv
 sudo pip3 install virtualenvwrapper
 mkvirtualenv cos_prod
 nano $VIRTUAL_ENV/bin/postactivate
-export DJANGO_SETTINGS_MODULE="main_project.settings.production"
+export DJANGO_SETTINGS_MODULE="main_project.settings.prod"
 
 nano $VIRTUAL_ENV/bin/predeactivate
 unset DJANGO_SETTINGS_MODULE
+
+[Change settings in files]
+nano manage.py 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main_project.settings.prod")
+nano wsgi.py
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main_project.settings.prod")
 
 
 [Setup Django Requirments]
