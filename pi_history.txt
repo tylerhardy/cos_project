@@ -165,12 +165,13 @@ After=network.target
 User=pi
 Group=www-data
 WorkingDirectory=/home/pi/Developer/cos_project
-ExecStart=/home/pi/.virtualenvs/inv_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/cos_project/main_project.sock main_project.wsgi:application
+ExecStart=/home/pi/.virtualenvs/cos_prod/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/pi/Developer/cos_project/main_project.sock main_project.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
 """
 `save and exit nano`
+sudo systemctl daemon-reload
 sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 

@@ -12,6 +12,7 @@ print(csv_location)
 sys.path.append(project_dir)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.dev'
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.prod'
 
 import django
 
@@ -35,5 +36,4 @@ for row in data:
         contacts.website = row[8]
         contacts.notes = row[9]
         contacts.status = row[10]
-        contacts.last_visit = row[11]
         contacts.save()
