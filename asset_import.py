@@ -11,8 +11,8 @@ print(csv_location)
 
 sys.path.append(project_dir)
 
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.dev'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.prod'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.dev'
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'main_project.settings.prod'
 
 import django
 
@@ -40,15 +40,15 @@ for row in data:
         assets.vendor = row[12]
         assets.requisition_number = row[13]
         assets.purchase_order = row[14]
-        assets.purchase_date = row[15]
+        # assets.purchase_date = row[15]
         assets.purchase_cost = row[16]
         assets.funded_by = row[17]
-        assets.eligible_upgrade = row[18]
+        # assets.eligible_upgrade = row[18]
         assets.hardware_type = row[19]
         assets.hardware_make = row[20]
         assets.hardware_model = row[21]
         assets.network_connection = row[22]
-        assets.ip_address = row[23]
+        # assets.ip_address = row[23]
         assets.mac_wired = row[24]
         assets.mac_wireless = row[25]
         assets.processor = row[26]
@@ -57,11 +57,11 @@ for row in data:
         assets.graphics = row[29]
         assets.os = row[30]
         assets.os_arch = row[31]
-        assets.active_directory = row[32]
+        # assets.active_directory = row[32]
         assets.organizational_unit = row[33]
-        assets.sccm = row[34]
-        assets.jamf = row[35]
-        assets.scep = row[36]
-        assets.identity_finder = row[37]
+        # assets.sccm = row[34]
+        # assets.jamf = row[35]
+        # assets.scep = row[36]
+        # assets.identity_finder = row[37]
         assets.notes = row[38]
         assets.save()
