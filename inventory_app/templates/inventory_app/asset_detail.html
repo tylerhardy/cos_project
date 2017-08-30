@@ -45,7 +45,7 @@
       <tr class="danger">
       {% endif %}
         <th>Hardware Function</th>
-        <td>{{ object.hardware_role }}</td>
+        <td>{{ object.get_hardware_role_display }}</td>
       </tr>
       {% if object.hardware_condition and object.hardware_condition.strip %}
       <tr class="success">
@@ -53,7 +53,7 @@
       <tr class="danger">
       {% endif %}
         <th> Hardware Condition</th>
-        <td>{{ object.hardware_condition }}</td>
+        <td>{{ object.get_hardware_condition_display }}</td>
       </tr>
       {% if object.inventory_system and object.inventory_system.strip %}
       <tr class="success">
@@ -61,7 +61,7 @@
       <tr class="danger">
       {% endif %}
         <th>Inventory System</th>
-        <td>{{ object.inventory_system }}</td>
+        <td>{{ object.get_inventory_system_display }}</td>
       </tr>
       {% if object.user and object.user.strip %}
       <tr class="success">
@@ -85,7 +85,7 @@
       <tr class="danger">
       {% endif %}
         <th>Department</th>
-        <td>{{ object.department }}</td>
+        <td>{{ object.get_department_display }}</td>
       </tr>
       {% if object.org_code and object.org_code.strip %}
       <tr class="success">
@@ -177,7 +177,7 @@
       <tr class="danger">
       {% endif %}
         <th>Hardware Type</th>
-        <td>{{ object.hardware_type }}</td>
+        <td>{{ object.get_hardware_type_display }}</td>
       </tr>
       {% if object.hardware_make and object.hardware_make.strip %}
       <tr class="success">
@@ -211,7 +211,7 @@
       <tr class="danger">
       {% endif %}
         <th>Network Connection</th>
-        <td>{{ object.network_connection }}</td>
+        <td>{{ object.get_network_connection_display }}</td>
       </tr>
       {% if object.ip_address and object.ip_address.strip %}
       <tr class="success">
@@ -279,7 +279,7 @@
       <tr class="danger">
       {% endif %}
         <th>OS</th>
-        <td>{{ object.os }}</td>
+        <td>{{ object.get_os_display }}</td>
       </tr>
       {% if object.os_arch and object.os_arch.strip %}
       <tr class="success">
@@ -287,7 +287,7 @@
       <tr class="danger">
       {% endif %}
         <th>OS Architecture</th>
-        <td>{{ object.os_arch }}</td>
+        <td>{{ object.get_os_arch_display }}</td>
       </tr>
       {% if object.active_directory and object.active_directory.strip or object.active_directory == True %}
       <tr class="success">

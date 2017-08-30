@@ -26,7 +26,7 @@ class AssetListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssetListView, self).get_context_data(**kwargs)
-        list_assets =  Asset.objects.order_by('asset_tag').all()
+        list_assets =  Asset.objects.order_by('asset_tag','pk').all()
         asset_filter = AssetListFilter(self.request.GET, queryset=list_assets)
         paginator = Paginator(asset_filter.qs, 10)
         page = self.request.GET.get('page')
@@ -146,13 +146,13 @@ class AssetDelete(LoginRequiredMixin, DeleteView):
 
 import csv
 from django.http import HttpResponse
-
 def export_assets_csv(request):
     """
     Function view to allow exporting of database to csv file.
     """
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="assets.csv"'
+    today = datetime.now().date()
+    response['Content-Disposition'] = 'attachment; filename="cos_assets_{0}.csv"'.format(today)
 
     writer = csv.writer(response)
     writer.writerow([

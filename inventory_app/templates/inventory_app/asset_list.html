@@ -13,7 +13,7 @@
 {% block content %}
 <div class="btn-group">
   <a href="{% url 'asset_new' %}" class='btn btn-primary' role="button">{% bootstrap_icon "new" %} New Asset</a>
-  <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export</a>
+  <a href="{% url 'export_assets_csv' %}" class='btn btn-default' role="button">{% bootstrap_icon "download-alt" %} Export All Assets</a>
 </div>
 
 <div class="spacing">
@@ -44,7 +44,7 @@
       </div>
       <div class="btn-group">
         <button type="submit" class="btn btn-primary">{% bootstrap_icon "search" %} Search</button>
-        <a href="{% url 'assets' %}" class='btn btn-default' role="button">{% bootstrap_icon "refresh" %} Clear</a>
+        <a href="{% url 'assets' %}" class='btn btn-default' role="button">{% bootstrap_icon "remove" %} Clear Search</a>
       </div>
       <div>
       </div>
@@ -95,11 +95,11 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="5">No data</td>
+          <td colspan="7">No data</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 {% bootstrap_pagination items extra=request.GET.urlencode %}
-{% endblock %}
+{% endblock content %}

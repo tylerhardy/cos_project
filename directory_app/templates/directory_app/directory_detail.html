@@ -46,7 +46,7 @@
       <tr class="danger">
       {% endif %}
         <th>Status</th>
-        <td>{{ object.status }}</td>
+        <td>{{ object.get_status_display }}</td>
       </tr>
       {% if object.first_name and object.first_name.strip %}
       <tr>
@@ -101,7 +101,7 @@
       {% else %}
       <tr class="info">
       {% endif %}
-        <th>Cell</th>
+        <th>Cell Number</th>
         <td>{{ object.phone_number_2 }}</td>
       </tr>
       {% if object.location and object.location.strip %}
@@ -118,7 +118,7 @@
       <tr class="info">
       {% endif %}
         <th>Website</th>
-        <td>{{ object.website }}</td>
+        <td><a href="{{object.website}}">{{ object.website }}</a></td>
       </tr>
       {% if object.visit_past_due == 'no_visit_performed' %}
         <tr class="info">
@@ -133,8 +133,8 @@
       {% else %}
         <tr>
       {% endif %}
-          <th>last_visit</th>
-          <td>{{ object.last_visit|date:"m d Y" }}</td>
+          <th>Last visit</th>
+          <td>{{ object.last_visit|date:"M d, Y" }}</td>
       </tr>
     </tbody>
   </table>
@@ -146,4 +146,4 @@
   <a href="{% url 'contact_update' object.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
   <a href="{% url 'contact_delete' object.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
 </div>
-{% endblock %}
+{% endblock content %}

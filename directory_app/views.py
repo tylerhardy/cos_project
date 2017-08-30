@@ -20,7 +20,7 @@ class DirectoryListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryListView, self).get_context_data(**kwargs)
-        list_contacts =  Directory.objects.order_by('department','last_name').filter(status__icontains='current')
+        list_contacts =  Directory.objects.order_by('department','last_name','pk').filter(status__icontains='current')
         contact_filter = DirectoryListFilter(self.request.GET, queryset=list_contacts)
         paginator = Paginator(contact_filter.qs, 10)
         page = self.request.GET.get('page')
@@ -45,8 +45,6 @@ def last_visit_view(request, *args, **kwargs):
         last_visit_obj.last_visit = datetime.now()
         last_visit_obj.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    # return render_to_response('directory_list.html', context, context_instance = RequestContext(request))
-    # return HttpResponseRedirect(reverse('directory_list'))
 
 
 class DirectoryDetailView(LoginRequiredMixin, generic.DetailView):
