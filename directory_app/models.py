@@ -62,7 +62,7 @@ class Directory(models.Model):
     location = models.CharField(max_length=200, blank=True, null=True)
     website = models.URLField(max_length=200, blank=True, null=True)
     picture = models.CharField(max_length=200, blank=True, null=True)
-    notes = models.TextField(blank=True, blank=True, null=True)
+    notes = models.TextField(blank=True)
     status = models.CharField(default='current', max_length=200, choices=status_choice)
     last_visit = models.DateTimeField(blank=True, null=True)
     added_date = models.DateField(auto_now_add=True)
