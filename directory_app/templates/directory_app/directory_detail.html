@@ -6,7 +6,14 @@
 
 {% block header %}
 <div class="header">
-  <h1>COS Directory | <strong>Contact Detail</strong></h1>
+  <h1>COS Directory |
+    <strong>Contact Detail
+    {% if object.last_visit %}
+      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkgreen">{% bootstrap_icon "ok" %} Audit</a>
+    {% else %}
+      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkred">{% bootstrap_icon "remove" %} Audit</a>
+    {% endif %}
+    </strong></h1>
 </div>
 {% endblock header %}
 
