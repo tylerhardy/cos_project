@@ -9,9 +9,9 @@
   <h1>COS Directory |
     <strong>Contact Detail
     {% if object.last_visit %}
-      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkgreen">{% bootstrap_icon "ok" %} Audit</a>
+      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkgreen">{% bootstrap_icon "ok" %} Visited</a>
     {% else %}
-      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkred">{% bootstrap_icon "remove" %} Audit</a>
+      <a href="{% url 'date_update' object.id %}"class='btn btn-default' role="button" style="color:darkred">{% bootstrap_icon "remove" %} Not Visited</a>
     {% endif %}
     </strong></h1>
 </div>
