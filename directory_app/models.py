@@ -59,10 +59,10 @@ class Directory(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number_1 = models.CharField("Office Ext.", max_length=200, validators=[ext_regex], blank=True) # validators should be a list
     phone_number_2 = models.CharField("Cell number", max_length=200, validators=[phone_regex], blank=True) # validators should be a list
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=200, blank=True, null=True)
     website = models.URLField(max_length=200, blank=True, null=True)
     picture = models.CharField(max_length=200, blank=True, null=True)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, blank=True, null=True)
     status = models.CharField(default='current', max_length=200, choices=status_choice)
     last_visit = models.DateTimeField(blank=True, null=True)
     added_date = models.DateField(auto_now_add=True)
