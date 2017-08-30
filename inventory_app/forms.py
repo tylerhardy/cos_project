@@ -21,4 +21,5 @@ class AssetForm(forms.ModelForm):
             ]
         widgets = {
             'purchase_date': forms.DateInput(attrs={'type': 'date'}),
+            'audited_date': forms.DateInput(attrs={'type': 'date'}),
         }
