@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^contact/new/$', views.DirectoryCreateView.as_view(), name='contact_new'),
     url(r'^contact/(?P<pk>\d+)/edit/$', views.DirectoryUpdateView.as_view(), name='contact_update'),
     url(r'^contact/(?P<pk>\d+)/date/$', views.last_visit_view, name='date_update'),
-    url(r'^contact/(?P<pk>\d+)/duplicate/$', views.DirectoryDuplicateView.as_view(), name='contact_duplicate'),
     url(r'^contact/(?P<pk>\d+)/delete/$', views.DirectoryDeleteView.as_view(), name='contact_delete'),
     url(r'^contact/export/csv/$', views.export_directory_csv, name='export_directory_csv'),
     # url(r'^contact/uploads/form/$', views.model_form_upload, name='model_form_upload'),

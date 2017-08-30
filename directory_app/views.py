@@ -44,39 +44,20 @@ def last_visit_view(request, *args, **kwargs):
         last_visit_obj = last_visit_obj[0]
         last_visit_obj.last_visit = datetime.now()
         last_visit_obj.save()
-    return HttpResponseRedirect(reverse('directory_list'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    # return render_to_response('directory_list.html', context, context_instance = RequestContext(request))
+    # return HttpResponseRedirect(reverse('directory_list'))
+
 
 class DirectoryDetailView(LoginRequiredMixin, generic.DetailView):
-    """
-    Generic DetailView to provide information of the asset.
-    """
     model = Directory
     template_name = 'directory_app/directory_detail.html'
 
 
-from django.forms.models import modelform_factory
-class ModelFormWidgetMixin(object):
-    def get_form_class(self):
-        return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
-
-
-from django import forms
-class DirectoryCreateView(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
-    """
-    Generic CreateView for adding contacts to the database.
-    Modified [get_context_data] to hide links in directory_form.html.
-    Modified [form_valid] to log who created the contact.
-    """
+class DirectoryCreateView(LoginRequiredMixin, CreateView):
     model = Directory
     template_name = 'directory_app/directory_form.html'
-    fields = [
-        'status', 'first_name','last_name','email_address','department','job_title',
-        'phone_number_1', 'phone_number_2', 'location', 'website', 'notes',
-        'last_visit'
-    ]
-    widgets = {
-        'last_visit': forms.DateInput(attrs={'type': 'date'}),
-    }
+    form_class = DirectoryForm
 
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryCreateView, self).get_context_data(**kwargs)
@@ -88,19 +69,10 @@ class DirectoryCreateView(LoginRequiredMixin, ModelFormWidgetMixin, CreateView):
         directory_create_form.added_by = self.request.user
         return super(DirectoryCreateView, self).form_valid(form)
 
-class DirectoryUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
-    """
-    """
+class DirectoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Directory
     template_name = 'directory_app/directory_form.html'
-    fields = [
-        'status', 'first_name','last_name','email_address','department','job_title',
-        'phone_number_1', 'phone_number_2', 'location', 'website', 'notes',
-        'last_visit'
-    ]
-    widgets = {
-        'last_visit': forms.DateInput(attrs={'type': 'date'}),
-    }
+    form_class = DirectoryForm
 
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryUpdateView, self).get_context_data(**kwargs)
@@ -113,47 +85,15 @@ class DirectoryUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
         asset_update_form.modified_date = datetime.now()
         return super(DirectoryUpdateView, self).form_valid(form)
 
-class DirectoryDuplicateView(LoginRequiredMixin, UpdateView):
-    form_class = DirectoryForm
-    model = Directory
-    template_name = 'directory_app/directory_form.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(DirectoryDuplicateView, self).get_context_data(**kwargs)
-        context['duplicate'] = True
-        return context
-
-    def post(self, request, pk, *args, **kwargs):
-        new_contact = get_object_or_404(Directory, pk = pk)
-        new_contact.pk = None
-        new_contact.added_by = None
-        new_contact.added_date = None
-        new_contact.modified_by = None
-        new_contact.modified_date = None
-        new_contact.last_visit = None
-        form = DirectoryForm(request.POST or None, instance = new_contact)
-        if form.is_valid():
-            new_contact.added_by = request.user
-            form.save()
-            return self.form_valid(form)
-        context = {"form": form,}
-        return render(request, "inventory_app/asset_form.html", context)
 
 class DirectoryDeleteView(LoginRequiredMixin, DeleteView):
-    """
-    Generic DeleteView to delete assets from database.
-    """
     model = Directory
     success_url = reverse_lazy('directory_list')
 
 
 import csv
 from django.http import HttpResponse
-
 def export_directory_csv(request):
-    """
-    Function view to allow exporting of the directory table to csv file.
-    """
     response = HttpResponse(content_type='text/csv')
     today = datetime.now().date()
     response['Content-Disposition'] = 'attachment; filename="cos_directory_{0}.csv"'.format(today)

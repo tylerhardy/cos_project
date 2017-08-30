@@ -74,38 +74,37 @@
       </tr>
     </thead>
     <tbody>
-      {% for contact in items %}
-        <tr>
-          <th><a href="{{ contact.get_absolute_url }}">{{ contact }}</a></th>
-          <td>{{ contact.email_address }}</td>
-          <td>{{ contact.phone_number_1 }}</td>
-          <td>{{ contact.get_department_display }}</td>
-          <td>{{ contact.location }}</td>
-        {% if contact.visit_past_due == 'no_visit_performed' %}
-          <td class="info">{{ contact.last_visit|date:"m d Y" }}</td>
-        {% elif contact.visit_past_due == 'visit_good' %}
-          <td class="success">{{ contact.last_visit|date:"m d Y" }}</td>
-        {% elif contact.visit_past_due == 'visit_old' %}
-          <td class="warning">{{ contact.last_visit|date:"m d Y" }}</td>
-        {% elif contact.visit_past_due == 'need_visit' %}
-          <td class="danger">{{ contact.last_visit|date:"m d Y" }}</td>
-        {% elif contact.visit_past_due == 'error' %}
-          <td class="danger">Error</td>
-        {% else %}
-          <td>{{contact.last_visit|date:"m d Y"}}</td>
-        {% endif %}
-          <td>
-            <a href="{% url 'contact_update' contact.id %}" style="color:black">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
-            <a href="{% url 'contact_duplicate' contact.id %}">{% bootstrap_icon "copy" %}</a>&nbsp;&nbsp;
-            <a href="{% url 'contact_delete' contact.id %}" style="color:darkred">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
-            <a href="{% url 'date_update' contact.id %}" style="color:darkgreen"> {% bootstrap_icon "ok" %}</a>
-          </td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="8">No data</td>
-        </tr>
-      {% endfor %}
+    {% for contact in items %}
+      <tr>
+        <th><a href="{{ contact.get_absolute_url }}">{{ contact }}</a></th>
+        <td>{{ contact.email_address }}</td>
+        <td>{{ contact.phone_number_1 }}</td>
+        <td>{{ contact.get_department_display }}</td>
+        <td>{{ contact.location }}</td>
+      {% if contact.visit_past_due == 'no_visit_performed' %}
+        <td class="info">{{ contact.last_visit|date:"m d Y" }}</td>
+      {% elif contact.visit_past_due == 'visit_good' %}
+        <td class="success">{{ contact.last_visit|date:"m d Y" }}</td>
+      {% elif contact.visit_past_due == 'visit_old' %}
+        <td class="warning">{{ contact.last_visit|date:"m d Y" }}</td>
+      {% elif contact.visit_past_due == 'need_visit' %}
+        <td class="danger">{{ contact.last_visit|date:"m d Y" }}</td>
+      {% elif contact.visit_past_due == 'error' %}
+        <td class="danger">Error</td>
+      {% else %}
+        <td>{{contact.last_visit|date:"m d Y"}}</td>
+      {% endif %}
+        <td>
+          <a href="{% url 'contact_update' contact.id %}" style="color:black">{% bootstrap_icon "pencil" %}</a>&nbsp;&nbsp;
+          <a href="{% url 'contact_delete' contact.id %}" style="color:darkred">{% bootstrap_icon "remove" %}</a>&nbsp;&nbsp;
+          <a href="{% url 'date_update' contact.id %}" style="color:darkgreen"> {% bootstrap_icon "ok" %}</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="8">No data</td>
+      </tr>
+    {% endfor %}
     </tbody>
   </table>
 </div>

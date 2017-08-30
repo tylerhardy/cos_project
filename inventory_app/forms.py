@@ -17,7 +17,7 @@ class AssetForm(forms.ModelForm):
             'ip_address', 'mac_wired', 'mac_wireless', 'processor',
             'harddrive', 'ram', 'graphics', 'os', 'os_arch',
             'active_directory', 'organizational_unit', 'sccm', 'jamf', 'scep',
-            'identity_finder', 'notes'
+            'identity_finder', 'notes', 'audited_date',
             ]
         widgets = {
             'purchase_date': forms.DateInput(attrs={'type': 'date'}),
