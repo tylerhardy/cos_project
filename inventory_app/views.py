@@ -156,28 +156,30 @@ def export_assets_csv(request):
 
     writer = csv.writer(response)
     writer.writerow([
-        'asset_tag', 'hardware_name', 'hardware_serial_number',
-        'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'user', 'curator', 'department', 'org_code',
-        'location', 'vendor', 'requisition_number', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
-        'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
-        'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
-        'graphics', 'os', 'os_arch', 'active_directory',
+        'asset_tag', 'inventory_system', 'hardware_name', 'location', 'vendor',
+        'vendor_serial_number', 'hardware_type', 'hardware_make',
+        'hardware_model', 'hardware_serial_number', 'network_connection',
+        'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive',
+        'ram', 'graphics', 'os', 'os_arch', 'user', 'curator', 'hardware_role',
+        'hardware_condition', 'department', 'org_code', 'requisition_number',
+        'purchase_order', 'purchase_date', 'purchase_cost', 'eligible_upgrade',
+        'eligible_upgrade_date', 'funded_by', 'active_directory',
         'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder',
-        'notes', 'added_date', 'added_by', 'modified_date', 'modified_by', 'audited_date', 'audited_by'
+        'notes', 'added_date', 'added_by', 'modified_date', 'modified_by',
+        'audited_date', 'audited_by'
         ])
     assets = Asset.objects.all().values_list(
-        'asset_tag', 'hardware_name', 'hardware_serial_number',
-        'vendor_serial_number', 'hardware_role', 'hardware_condition',
-        'inventory_system', 'user', 'curator', 'department', 'org_code',
-        'location', 'vendor', 'requisition_number', 'purchase_order',
-        'purchase_date', 'purchase_cost', 'funded_by', 'eligible_upgrade', 'hardware_type',
-        'hardware_make', 'hardware_model', 'network_connection', 'ip_address',
-        'mac_wired', 'mac_wireless', 'processor', 'harddrive', 'ram',
-        'graphics', 'os', 'os_arch', 'active_directory',
+        'asset_tag', 'inventory_system', 'hardware_name', 'location', 'vendor',
+        'vendor_serial_number', 'hardware_type', 'hardware_make',
+        'hardware_model', 'hardware_serial_number', 'network_connection',
+        'ip_address', 'mac_wired', 'mac_wireless', 'processor', 'harddrive',
+        'ram', 'graphics', 'os', 'os_arch', 'user', 'curator', 'hardware_role',
+        'hardware_condition', 'department', 'org_code', 'requisition_number',
+        'purchase_order', 'purchase_date', 'purchase_cost', 'eligible_upgrade',
+        'eligible_upgrade_date', 'funded_by', 'active_directory',
         'organizational_unit', 'sccm', 'jamf', 'scep', 'identity_finder',
-        'notes', 'added_date', 'added_by', 'modified_date', 'modified_by', 'audited_date', 'audited_by'
+        'notes', 'added_date', 'added_by', 'modified_date', 'modified_by',
+        'audited_date', 'audited_by'
     )
     for asset in assets:
         writer.writerow(asset)

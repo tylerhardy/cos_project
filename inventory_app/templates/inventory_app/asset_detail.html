@@ -5,400 +5,417 @@
 
 {% block header %}
 <div class="header">
+  <div class='btn-toolbar pull-right'>
+    <div class='btn-group'>
+      <a href="javascript:history.go(-1)" class='btn btn-default' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+    </div>
+  </div>
   <h1>COS Inventory | 
-    <strong>{{ object.asset_tag }}
-    {% if object.audited_date %}
-      <a href="{% url 'asset_audit' asset.id %}"class='btn btn-default' role="button" style="color:darkgreen">{% bootstrap_icon "ok" %} Audit</a>
-    {% else %}
-      <a href="{% url 'asset_audit' asset.id %}"class='btn btn-default' role="button" style="color:darkred">{% bootstrap_icon "remove" %} Audit</a>
-    {% endif %}
-    </strong></h1>
+    <strong>{{ object.asset_tag }}</strong></h1>
 </div>
 {% endblock header %}
 
 {% block content %}
-<div class="btn-group">
-  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-  <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
-  <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
-  <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-  <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
+<div class="panel" style="border:0; box-shadow: none;">
+  <div class="btn-group">
+    <a href="{% url 'asset_update' asset.id %}" class='btn btn-primary' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+    <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
+    <a href="{% url 'asset_audit' asset.id %}"class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
+    <a href="{% url 'asset_delete' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "remove" %} Delete</a>
+  </div>
 </div>
 
-<div class="spacing">
-  <p></p>
-</div>
-
-<div class="table-responsive">
-  <table class="table table-bordered table-condensed table-hover table-striped">
-    <thead>
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>Asset Info</center></strong></div>
+    <table class="table table-condensed table-hover">
       <tr>
-        <th colspan="2"><center>Hardware Information | <em>{{ object.asset_tag }}</em></center></th>
+        <th>Asset tag</th>
+        {% if object.asset_tag and object.asset_tag.strip %}
+        <td>{{ object.asset_tag }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-    </thead>
-    <tbody>
-      {% if object.hardware_name and object.hardware_name.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Hardware Name</th>
-        <td>{{ object.hardware_name }}</td>
-      </tr>
-      {% if object.hardware_role and object.hardware_role.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Hardware Function</th>
-        <td>{{ object.get_hardware_role_display }}</td>
-      </tr>
-      {% if object.hardware_condition and object.hardware_condition.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th> Hardware Condition</th>
-        <td>{{ object.get_hardware_condition_display }}</td>
-      </tr>
-      {% if object.inventory_system and object.inventory_system.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Inventory System</th>
+      <tr>
+        <th>Inventory system</th>
+        {% if object.inventory_system and object.inventory_system.strip %}
         <td>{{ object.get_inventory_system_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.user and object.user.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>User</th>
-        <td>{{ object.user }}</td>
+      <tr>
+        <th>Hardware Name</th>
+        {% if object.hardware_name and object.hardware_name.strip %}
+        <td>{{ object.hardware_name }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.curator and object.curator.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Curator</th>
-        <td>{{ object.curator }}</td>
-      </tr>
-      {% if object.department and object.department.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Department</th>
-        <td>{{ object.get_department_display }}</td>
-      </tr>
-      {% if object.org_code and object.org_code.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
-        <th>Organization Code</th>
-        <td>{{ object.org_code }}</td>
-      </tr>
-      {% if object.location and object.location.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Location</th>
+        {% if object.location and object.location.strip %}
         <td>{{ object.location }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.vendor and object.vendor.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+    </table>
+  </div>
+</div>
+
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>Hardware Info</center></strong></div>
+    <table class="table table-condensed table-hover">
+      <tr>
         <th>Vendor</th>
+        {% if object.vendor and object.vendor.strip %}
         <td>{{ object.vendor }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.vendor_serial_number and object.vendor_serial_number.strip %}
-      <tr class="success">
-      {% elif object.hardware_serial_number and object.hardware_serial_number.strip %}
-      <tr class="info">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Vendor Serial Number</th>
+        {% if object.vendor_serial_number and object.vendor_serial_number.strip %}
         <td>{{ object.vendor_serial_number }}</td>
+        {% elif object.hardware_serial_number and object.hardware_serial_number.strip %}
+        <td class="info"></td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.requisition_number and object.requisition_number.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Requisition Number</th>
-        <td>{{ object.requisition_number }}</td>
-      </tr>
-      {% if object.purchase_order and object.purchase_order.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>PO</th>
-        <td>{{ object.purchase_order }}</td>
-      </tr>
-      {% if object.purchase_date and object.purchase_date.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Purchase Date</th>
-        <td>{{ object.purchase_date }}</td>
-      </tr>
-      {% if object.purchase_cost and object.purchase_cost.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Cost</th>
-        <td>{{ object.purchase_cost }}</td>
-      </tr>
-      {% if object.funded_by and object.funded_by.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Funded By</th>
-        <td>{{ object.funded_by }}</td>
-      </tr>
-      {% if object.is_eligible_upgrade == 'is_eligible' %}
-      <tr class="success">
-      {% elif object.is_eligible_upgrade == 'almost_eligible' %}
-      <tr class="warning">
-      {% else %}
-      <tr class="info">
-      {% endif %}
-        <th>Upgrade Eligibility</th>
-        <td>{{ object.eligible_upgrade_date }}</td>
-      </tr>
-      {% if object.hardware_type and object.hardware_type.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Hardware Type</th>
+        {% if object.hardware_type and object.hardware_type.strip %}
         <td>{{ object.get_hardware_type_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.hardware_make and object.hardware_make.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Hardware Make</th>
+        {% if object.hardware_make and object.hardware_make.strip %}
         <td>{{ object.hardware_make }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.hardware_model and object.hardware_model.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Hardware Model</th>
+        {% if object.hardware_model and object.hardware_model.strip %}
         <td>{{ object.hardware_model }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.hardware_serial_number and object.hardware_serial_number.strip %}
-      <tr class="success">
-      {% elif object.vendor_serial_number and object.vendor_serial_number.strip %}
-      <tr class="info">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Hardware Serial Number</th>
+        {% if object.hardware_serial_number and object.hardware_serial_number.strip %}
         <td>{{ object.hardware_serial_number }}</td>
+        {% elif object.vendor_serial_number and object.vendor_serial_number.strip %}
+        <td class="info"></td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.network_connection and object.network_connection.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Network Connection</th>
+        {% if object.network_connection and object.network_connection.strip %}
         <td>{{ object.get_network_connection_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.ip_address and object.ip_address.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>IP Address</th>
+        {% if object.ip_address and object.ip_address.strip %}
         <td>{{ object.ip_address }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.mac_wired and object.mac_wired.strip %}
-      <tr class="success">
-      {% elif object.mac_wireless and object.mac_wireless.strip %}
-      <tr class="info">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>MAC Address</th>
+        {% if object.mac_wired and object.mac_wired.strip %}
         <td>{{ object.mac_wired }}</td>
+        {% elif object.mac_wireless and object.mac_wireless.strip %}
+        <td class="info"></td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.mac_wireless and object.mac_wireless.strip %}
-      <tr class="success">
-      {% elif object.mac_wired and object.mac_wired.strip %}
-      <tr class="info">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>MAC Wireless Address</th>
+        {% if object.mac_wireless and object.mac_wireless.strip %}
         <td>{{ object.mac_wireless }}</td>
+        {% elif object.mac_wired and object.mac_wired.strip %}
+        <td class="info"></td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.processor and object.processor.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>Processor</th>
+        {% if object.processor and object.processor.strip %}
         <td>{{ object.processor }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.harddrive and object.harddrive.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>HDD</th>
+        {% if object.harddrive and object.harddrive.strip %}
         <td>{{ object.harddrive }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.ram and object.ram.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>RAM</th>
+        {% if object.ram and object.ram.strip %}
         <td>{{ object.ram }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.graphics and object.graphics.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>Graphics Card</th>
+        {% if object.graphics and object.graphics.strip %}
         <td>{{ object.graphics }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.os and object.os.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>OS</th>
+        {% if object.os and object.os.strip %}
         <td>{{ object.get_os_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.os_arch and object.os_arch.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>OS Architecture</th>
+        {% if object.os_arch and object.os_arch.strip %}
         <td>{{ object.get_os_arch_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.active_directory and object.active_directory.strip or object.active_directory == True %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+    </table>
+  </div>
+</div>
+
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>User Info</center></strong></div>
+    <table class="table table-condensed table-hover">
+      <tr>
+        <th>User</th>
+        {% if object.user and object.user.strip %}
+        <td>{{ object.user }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Curator</th>
+        {% if object.curator and object.curator.strip %}
+        <td>{{ object.curator }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Hardware Function</th>
+        {% if object.hardware_role and object.hardware_role.strip %}
+        <td>{{ object.get_hardware_role_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th> Hardware Condition</th>
+        {% if object.hardware_condition and object.hardware_condition.strip %}
+        <td>{{ object.get_hardware_condition_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Department</th>
+        {% if object.department and object.department.strip %}
+        <td>{{ object.get_department_display }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Organization Code</th>
+        {% if object.org_code and object.org_code.strip %}
+        <td>{{ object.org_code }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>Purchase Info</center></strong></div>
+    <table class="table table-condensed table-hover">
+      <tr>
+        <th>Requisition Number</th>
+        {% if object.requisition_number and object.requisition_number.strip %}
+        <td>{{ object.requisition_number }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>PO</th>
+        {% if object.purchase_order and object.purchase_order.strip %}
+        <td>{{ object.purchase_order }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Purchase Date</th>
+        {% if object.purchase_date %}
+        <td>{{ object.purchase_date|date:"m/d/Y" }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Cost</th>
+        {% if object.purchase_cost and object.purchase_cost.strip %}
+        <td>{{ object.purchase_cost }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Upgrade Eligibility After</th>
+        {% if object.is_eligible_upgrade == 'is_eligible' %}
+        <td class="danger">{{ object.eligible_upgrade_date|date:"m/d/Y" }}</td>
+        {% elif object.is_eligible_upgrade == 'almost_eligible' %}
+        <td class="warning">{{ object.eligible_upgrade_date|date:"m/d/Y" }}</td>
+        {% elif object.is_eligible_upgrade == 'not_eligible' %}
+        <td>{{ object.eligible_upgrade_date|date:"m/d/Y" }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Funded By <em>OR</em> Obtained through</th>
+        {% if object.funded_by and object.funded_by.strip %}
+        <td>{{ object.funded_by }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>Domain Info</center></strong></div>
+    <table class="table table-condensed table-hover">
+      <tr>
         <th>On Domain</th>
+        {% if object.active_directory and object.active_directory.strip or object.active_directory == True %}
         <td>{{ object.active_directory }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.organizational_unit and object.organizational_unit.strip %}
-      <tr class="success">
-      {% else %}
-      <tr class="danger">
-      {% endif %}
+      <tr>
         <th>OU Location</th>
+        {% if object.organizational_unit and object.organizational_unit.strip %}
         <td>{{ object.organizational_unit }}</td>
+        {% else %}
+        <td class="danger"></td>
+        {% endif %}
       </tr>
-      {% if object.sccm and object.sccm.strip or object.sccm == True %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>Listed in SCCM</th>
+        {% if object.sccm and object.sccm.strip or object.sccm == True %}
         <td>{{ object.sccm }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.jamf and object.jamf.strip or object.jamf == True %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>Listed in JAMF</th>
+        {% if object.jamf and object.jamf.strip or object.jamf == True %}
         <td>{{ object.jamf }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.scep and object.scep.strip or object.scep == True %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>Has SCEP Installed</th>
+        {% if object.scep and object.scep.strip or object.scep == True %}
         <td>{{ object.scep }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
       </tr>
-      {% if object.identity_finder and object.identity_finder.strip or object.identity_finder == True %}
-      <tr class="success">
-      {% else %}
-      <tr class="info">
-      {% endif %}
+      <tr>
         <th>Has Identity Finder</th>
+        {% if object.identity_finder and object.identity_finder.strip or object.identity_finder == True %}
         <td>{{ object.identity_finder }}</td>
+        {% else %}
+        <td class="info"></td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="table-responsive" style="border:0">
+  <div class="panel panel-default">
+    <div class="panel-heading"><strong><center>Other Info</center></strong></div>
+    <table class="table table-condensed table-hover">
+      <tr>
+        <th>Date Audited</th>
+        {% if asset.is_past_due == 'audit_good' %}
+        <td>{{ object.audited_date|date:"M. d, Y" }}</td>
+        {% elif asset.is_past_due == 'audited_old' %}
+        <td class="warning"></td>
+        {% elif asset.is_past_due == 'need_audit' %}
+        <td class="danger"></td>
+        {% elif asset.is_past_due == 'missing_info' %}
+        <td class="info"></td>
+        {% elif asset.is_past_due == 'no_audit_performed' %}
+        <td></td>
+        {% endif %}
       </tr>
       <tr>
         <th>Notes</th>
         <td>{{ object.notes }}</td>
       </tr>
-      <tr>
-        <th>Date Added</th>
-        <td>{{ object.added_date }}</td>
-      </tr>
-      <tr>
-        <th>Added By</th>
-        <td>{{ object.added_by }}</td>
-      </tr>
-      <tr>
-        <th>Date Modified</th>
-        <td>{{ object.modified_date }}</td>
-      </tr>
-      <tr>
-        <th>Modified By</th>
-        <td>{{ object.modified_by }}</td>
-      </tr>
-      {% if asset.is_past_due == 'audit_good' %}
-        <tr class="success">
-      {% elif asset.is_past_due == 'audited_old' %}
-        <tr class="warning">
-      {% elif asset.is_past_due == 'need_audit' %}
-        <tr class="danger">
-      {% elif asset.is_past_due == 'missing_info' %}
-        <tr class="info">
-      {% elif asset.is_past_due == 'no_audit_performed' %}
-        <tr>
-      {% endif %}
-          <th>Date Audited</th>
-          <td>{{ object.audited_date }}</td>
-        </tr>
-        {% if asset.is_past_due == 'audit_good' %}
-          <tr class="success">
-        {% elif asset.is_past_due == 'audited_old' %}
-          <tr class="warning">
-        {% elif asset.is_past_due == 'need_audit' %}
-          <tr class="danger">
-        {% elif asset.is_past_due == 'missing_info' %}
-          <tr class="info">
-        {% elif asset.is_past_due == 'no_audit_performed' %}
-          <tr>
-        {% endif %}
-          <th>Audited By</th>
-          <td>{{ object.audited_by }}</td>
-        </tr>
-    </tbody>
-  </table>
+    </table>
+  </div>
 </div>
-<div class="btn-group">
-  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-  <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
-  <a href="{% url 'asset_update' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "pencil" %} Edit</a>
-  <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
-  <a href="{% url 'asset_delete' asset.id %}" class='btn btn-danger' role="button">{% bootstrap_icon "remove" %} Delete</a>
+
+<div class="panel" style="border:0; box-shadow: none;">
+  <div class="btn-group">
+    <a href="{% url 'asset_update' asset.id %}" class='btn btn-primary' role="button">{% bootstrap_icon "pencil" %} Edit</a>
+    <a href="{% url 'asset_duplicate' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "copy" %} Copy</a>
+    <a href="{% url 'asset_audit' asset.id %}"class='btn btn-default' role="button">{% bootstrap_icon "ok" %} Audit</a>
+    <a href="{% url 'asset_delete' asset.id %}" class='btn btn-default' role="button">{% bootstrap_icon "remove" %} Delete</a>
+  </div>
 </div>
+  
+
 {% endblock content %}

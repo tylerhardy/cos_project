@@ -5,30 +5,38 @@
 
 {% block header %}
 <div class="header">
-{% if new %}
+  <div class='btn-toolbar pull-right'>
+    <div class='btn-group'>
+      <a href="javascript:history.go(-1)" class='btn btn-default' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
+    </div>
+  </div>
+  {% if new %}
   <h1>COS Directory | <strong>New Contact</strong></h1>
-{% else %}
+  {% else %}
   <h1>COS Directory | <strong>Edit Contact</strong></h1>
-{% endif %}
+  {% endif %}
 </div>
 {% endblock header %}
 
 {% block content %}
 <div class="forms">
   <form action="" method="POST" class="form">
-    <div class="btn-group">
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Save</button>
+    <div class="form-group">
+      <div class="btn-group">
+        <button class='btn btn-primary' type="submit">{% bootstrap_icon "save" %} Save</button>
+        <button class='btn btn-default' type="reset">{% bootstrap_icon "remove" %} Reset</button>
+      </div>
     </div>
+
     {% csrf_token %}
     {% bootstrap_form form %}
-    <div class="btn-group">
-      <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-      <a href="{% url 'directory_list' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Directory</a>
-      <button class='btn btn-warning' type="reset">{% bootstrap_icon "refresh" %} Reset</button>
-      <button class='btn btn-success' type="submit">{% bootstrap_icon "save" %} Save</button>
+
+    <div class="form-group">
+      <div class="btn-group">
+        <button class='btn btn-primary' type="submit">{% bootstrap_icon "save" %} Save</button>
+        <button class='btn btn-default' type="reset">{% bootstrap_icon "remove" %} Reset</button>
+      </div>
     </div>
   </form>
 </div>

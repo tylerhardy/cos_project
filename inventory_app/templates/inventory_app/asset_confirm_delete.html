@@ -5,26 +5,23 @@
 
 {% block header %}
 <div class="header">
+  <div class='btn-toolbar pull-right'>
+    <div class='btn-group'>
+      <a href="javascript:history.go(-1)" class='btn btn-default' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
+      <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
+    </div>
+  </div>
   <h1>COS Inventory | <strong>Delete Asset</strong></h1>
 </div>
 {% endblock header %}
 
 {% block content %}
-<div class="btn-group">
-  <a href="javascript:history.go(-1)" class='btn btn-primary' role="button">{% bootstrap_icon "arrow-left" %} Back</a>
-  <a href="{% url 'assets' %}" class='btn btn-info' role="button">{% bootstrap_icon "list" %} Assets</a>
-</div>
-
-<div class="spacing">
-    <p></p>
-</div>
-
 <div class="forms">
   <p>Are you sure you want to delete the asset: <strong><em>{{ asset }}?</em></strong></p>
   <form action="" method="POST" class="form">
     {% csrf_token %}
     {% buttons %}
-      <button class='btn btn-danger' type="submit">{% bootstrap_icon "remove" %} Confirm deletion</button>
+    <button class='btn btn-danger' type="submit">{% bootstrap_icon "remove" %} Confirm deletion</button>
     {% endbuttons %}
   </form>
 </div>
