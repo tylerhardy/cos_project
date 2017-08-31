@@ -20,7 +20,7 @@ class DirectoryListView(LoginRequiredMixin, FilterView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(DirectoryListView, self).get_context_data(**kwargs)
-        list_contacts =  Directory.objects.order_by('department','last_name','pk').filter(status__icontains='current')
+        list_contacts =  Directory.objects.order_by('department','last_name','pk').filter(current__icontains=True)
         contact_filter = DirectoryListFilter(self.request.GET, queryset=list_contacts)
         paginator = Paginator(contact_filter.qs, 10)
         page = self.request.GET.get('page')
@@ -98,12 +98,12 @@ def export_directory_csv(request):
 
     writer = csv.writer(response)
     writer.writerow([
-        'status', 'first_name','last_name','email_address','department','job_title',
+        'current', 'first_name','last_name','email_address','department','job_title',
         'phone_number_1', 'phone_number_2', 'location', 'website', 'notes',
         'last_visit', 'added_date', 'added_by', 'modified_date', 'modified_by'
         ])
     contacts = Directory.objects.all().values_list(
-        'status', 'first_name','last_name','email_address','department','job_title',
+        'current', 'first_name','last_name','email_address','department','job_title',
         'phone_number_1', 'phone_number_2', 'location', 'website', 'notes',
         'last_visit', 'added_date', 'added_by', 'modified_date', 'modified_by'
     )

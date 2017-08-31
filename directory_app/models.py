@@ -50,6 +50,7 @@ status_choice = (
 
 # Create your models here.
 class Directory(models.Model):
+    current = models.BooleanField(default=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     email_address = models.EmailField(max_length=200)
@@ -63,7 +64,6 @@ class Directory(models.Model):
     website = models.URLField(max_length=200, blank=True, null=True)
     picture = models.CharField(max_length=200, blank=True, null=True)
     notes = models.TextField(blank=True)
-    status = models.CharField(default='current', max_length=200, choices=status_choice)
     last_visit = models.DateTimeField(blank=True, null=True)
     added_date = models.DateField(auto_now_add=True)
     added_by = models.ForeignKey(User, related_name='directory_added_user', blank=True, null=True)
@@ -95,10 +95,3 @@ class Directory(models.Model):
             return 'need_visit'
         else:
             return 'error'
-
-    @property
-    def current_status(self):
-        if self.status is None:
-            return 'no_status'
-        else:
-            return self.status

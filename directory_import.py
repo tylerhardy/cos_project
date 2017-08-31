@@ -35,5 +35,5 @@ for row in data:
         contacts.location = row[7]
         contacts.website = row[8]
         contacts.notes = row[9]
-        contacts.status = row[10]
+        contacts.current = row[10]
         contacts.save()

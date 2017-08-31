@@ -9,7 +9,7 @@ class DirectoryForm(forms.ModelForm):
     class Meta:
         model = Directory
         fields = [
-            'status', 'first_name','last_name','email_address','department','job_title',
+            'current', 'first_name','last_name','email_address','department','job_title',
             'phone_number_1', 'phone_number_2', 'location', 'website', 'notes',
             'last_visit'
         ]
